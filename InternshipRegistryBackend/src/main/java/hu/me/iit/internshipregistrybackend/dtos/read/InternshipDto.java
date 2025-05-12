@@ -1,4 +1,4 @@
-package hu.me.iit.internshipregistrybackend.dtos;
+package hu.me.iit.internshipregistrybackend.dtos.read;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -8,8 +8,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -44,5 +42,4 @@ public class InternshipDto {
     private CompanyDto company;
 
     private List<DocumentDto> documents;
-
 }

@@ -1,6 +1,7 @@
 package hu.me.iit.internshipregistrybackend.services;
 
-import hu.me.iit.internshipregistrybackend.dtos.CompanyDto;
+import hu.me.iit.internshipregistrybackend.dtos.create.CreateCompanyDto;
+import hu.me.iit.internshipregistrybackend.dtos.read.CompanyDto;
 import hu.me.iit.internshipregistrybackend.entities.Company;
 import hu.me.iit.internshipregistrybackend.exceptions.AppException;
 import hu.me.iit.internshipregistrybackend.mapper.CompanyMapper;
@@ -27,15 +28,30 @@ public class CompanyService {
         return companyMapper.toDto(company);
     }
 
-    public CompanyDto createCompany(Company company) {
-        return companyMapper.toDto(companyRepository.save(company));
+    public CompanyDto getCompanyByName(String name) {
+        Company company = companyRepository.findByName(name)
+                .orElseThrow(() -> new AppException("Company with name: '" + name + "' not found", HttpStatus.NOT_FOUND));
+        return companyMapper.toDto(company);
     }
 
-    public hu.me.iit.internshipregistrybackend.dtos.CompanyDto updateCompany(Long id, Company updatedCompany) {
-        Company originalCompany = companyRepository.findById(id)
+    public CompanyDto createCompany(CreateCompanyDto companyDto) {
+        Company createCompany = Company.builder()
+                .name(companyDto.getName())
+                .address(companyDto.getAddress())
+                .active(true)
+                .build();
+
+        return companyMapper.toDto(companyRepository.save(createCompany));
+    }
+
+    public CompanyDto updateCompany(Long id, CreateCompanyDto companyDto) {
+        Company updateCompany = companyRepository.findById(id)
                         .orElseThrow(() -> new AppException("Company not found", HttpStatus.NOT_FOUND));
-        updatedCompany.setId(originalCompany.getId());
-        return companyMapper.toDto(companyRepository.save(updatedCompany));
+        updateCompany.setName(companyDto.getName());
+        updateCompany.setAddress(companyDto.getAddress());
+        updateCompany.setActive(companyDto.isActive());
+
+        return companyMapper.toDto(companyRepository.save(updateCompany));
     }
 
     public void deleteCompany(Long id) {

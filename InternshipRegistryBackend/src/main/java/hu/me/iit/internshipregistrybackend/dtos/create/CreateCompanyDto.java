@@ -1,19 +1,14 @@
-package hu.me.iit.internshipregistrybackend.dtos;
+package hu.me.iit.internshipregistrybackend.dtos.create;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Getter
-@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CompanyDto {
-
-    @NotNull
-    private Long id;
+public class CreateCompanyDto {
 
     @NotBlank
     private String name;
@@ -21,6 +16,6 @@ public class CompanyDto {
     @NotBlank
     private String address;
 
-    @NotBlank
+    @NotNull
     private boolean active;
 }

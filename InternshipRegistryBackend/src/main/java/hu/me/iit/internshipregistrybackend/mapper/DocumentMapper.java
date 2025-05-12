@@ -1,14 +1,20 @@
 package hu.me.iit.internshipregistrybackend.mapper;
 
-import hu.me.iit.internshipregistrybackend.dtos.DocumentDto;
+import hu.me.iit.internshipregistrybackend.dtos.read.DocumentDto;
 import hu.me.iit.internshipregistrybackend.entities.Document;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = InternshipFetcher.class)
 public interface DocumentMapper {
+    @Mapping(source = "internshipId", target = "internship.id")
     Document toEntity(DocumentDto documentDto);
+
+    @Mapping(source = "internship.id", target = "internshipId")
     DocumentDto toDto(Document document);
+
     List<DocumentDto> toDtoList(List<Document> documents);
 }
+

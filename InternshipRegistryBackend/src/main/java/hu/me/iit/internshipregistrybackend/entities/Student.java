@@ -24,7 +24,8 @@ public class Student extends User {
   @Column(nullable = false)
   private String specialization;
 
-  @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, orphanRemoval = true)
+  @OneToOne(mappedBy = "student", optional = true, cascade = CascadeType.REMOVE,
+          orphanRemoval = true)
   private Internship internship;
 
   @PrePersist

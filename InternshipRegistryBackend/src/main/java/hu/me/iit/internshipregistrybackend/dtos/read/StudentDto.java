@@ -1,14 +1,11 @@
-package hu.me.iit.internshipregistrybackend.dtos;
+package hu.me.iit.internshipregistrybackend.dtos.read;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-
-@Getter
-@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +17,7 @@ public class StudentDto extends UserDto {
     private String name;
 
     @NotBlank
-    @Size(min=6, max = 6)
+    @Pattern(regexp = "^[A-Z0-9]{6}$", message = "Neptuncode must be exactly 6 uppercase letters or digits")
     private String neptuncode;
 
     @NotBlank

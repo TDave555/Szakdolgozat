@@ -1,15 +1,13 @@
-package hu.me.iit.internshipregistrybackend.dtos;
+package hu.me.iit.internshipregistrybackend.dtos.read;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Data
 @Builder
 public class DocumentDto {
 
@@ -18,7 +16,7 @@ public class DocumentDto {
 
     @NotBlank
     @Size(min = 3)
-    private String name;
+    private String title;
 
     @NotBlank
     private String fileExtension;

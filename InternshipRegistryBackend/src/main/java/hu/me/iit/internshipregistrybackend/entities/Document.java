@@ -17,7 +17,7 @@ public class Document {
   private Long id;
 
   @Column(nullable = false)
-  private String name;
+  private String title;
 
   @Column(name = "file_extension", nullable = false)
   private String fileExtension;

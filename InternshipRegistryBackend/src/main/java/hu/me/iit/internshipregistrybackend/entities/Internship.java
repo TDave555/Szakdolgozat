@@ -43,7 +43,7 @@ public class Internship {
   private boolean completed;
 
   @OneToOne(optional = false, fetch = FetchType.EAGER)
-  @JoinColumn(name = "student_id", referencedColumnName = "id",
+  @JoinColumn(name = "student_id", referencedColumnName = "user_id",
           nullable = false, unique = true)
   private Student student;
 
