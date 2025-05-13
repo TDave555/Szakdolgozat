@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+//import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -28,11 +28,10 @@ public class SecurityConfig {
                         .configurationSource(corsConfigurationSource())
                 )
                 .csrf(csrf -> csrf
+                                .disable()
                         //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .disable()
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -78,30 +77,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-//    @Bean
-//    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService());
-//        provider.setPasswordEncoder(passwordEncoder);
-//        return provider;
-//    }
-
-//    @Bean
-//    public AuthenticationSuccessHandler loginSuccessHandler() {
-//        return (request, response, authentication) -> {
-//            response.setStatus(HttpStatus.OK.value());
-//            response.getWriter().write("Login successful");
-//        };
-//    }
-
-//    @Bean
-//    public AuthenticationFailureHandler loginFailureHandler() {
-//        return (request, response, exception) -> {
-//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//            response.getWriter().write("Login failed");
-//        };
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

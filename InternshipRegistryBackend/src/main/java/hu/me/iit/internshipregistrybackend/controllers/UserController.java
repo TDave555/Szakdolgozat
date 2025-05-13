@@ -1,49 +1,48 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
-import hu.me.iit.internshipregistrybackend.dtos.UserDto;
-import hu.me.iit.internshipregistrybackend.entities.User;
-import hu.me.iit.internshipregistrybackend.mapper.UserMapper;
+import hu.me.iit.internshipregistrybackend.dtos.create.CreateUserDto;
+import hu.me.iit.internshipregistrybackend.dtos.read.UserDto;
+import hu.me.iit.internshipregistrybackend.dtos.update.UpdateUserDto;
 import hu.me.iit.internshipregistrybackend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("admin/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-    private final UserMapper userMapper;
 
-    @GetMapping("")
+    private final UserService userService;
+
+    @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
-        UserDto updatedUser = userService.updateUser(id, user);
-        return ResponseEntity.ok(updatedUser);
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody User user) {
-        UserDto createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserDto userDto) {
+        return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserDto userDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDto));
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
