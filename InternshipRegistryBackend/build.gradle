@@ -3,6 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
+ext {
+	springAiVersion = "1.0.0-M8"
+}
 
 group = 'hu.me.iit'
 version = '0.0.1-SNAPSHOT'
@@ -35,7 +38,7 @@ dependencies {
 
 	//Database
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc' //database connection
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' //database schema management
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'//database schema management
 	runtimeOnly 'com.mysql:mysql-connector-j' //MySQL connector
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation' //data validation, mostly DTOs
@@ -49,7 +52,11 @@ dependencies {
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
-	// Excel Import-Export
+	//Apache Tika for document detection
+	implementation 'org.apache.tika:tika-core:3.1.0'
+	implementation 'org.apache.tika:tika-parsers-standard:3.1.0'
+
+	// Apache Poi for Excel Import-Export
 	implementation 'org.apache.poi:poi:5.4.0' // for .xls format if needed
 	implementation 'org.apache.poi:poi-ooxml:5.4.0' // for .xlsx format
 
@@ -57,6 +64,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.ai:spring-ai-bom:$springAiVersion"
+	}
 }
 
 tasks.named('test') {

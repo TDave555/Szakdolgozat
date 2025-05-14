@@ -1,13 +1,14 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateDocumentDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.DocumentDto;
 import hu.me.iit.internshipregistrybackend.services.DocumentService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,14 +29,17 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.getDocument(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<DocumentDto> updateDocument(@PathVariable Long id, @Valid @RequestBody CreateDocumentDto documentDto) {
-        return ResponseEntity.ok(documentService.updateDocument(id, documentDto));
+    @PostMapping
+    public ResponseEntity<DocumentDto> createDocument(@RequestParam("file") MultipartFile file, @RequestParam("internshipId") Long internshipId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(documentService.createDocument(file, internshipId));
     }
 
-    @PostMapping
-    public ResponseEntity<DocumentDto> createDocument(@Valid @RequestBody CreateDocumentDto documentDto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(documentService.createDocument(documentDto));
+    @GetMapping("/{id}/download")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) {
+        Resource file = documentService.sendFile(id);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 
     @DeleteMapping("/{id}")

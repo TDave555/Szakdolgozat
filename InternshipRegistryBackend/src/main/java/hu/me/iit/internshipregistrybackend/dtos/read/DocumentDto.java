@@ -22,7 +22,7 @@ public class DocumentDto {
     private String fileExtension;
 
     @NotBlank
-    private String filePath;
+    private String filepath;
 
     @NotNull
     private Long internshipId;

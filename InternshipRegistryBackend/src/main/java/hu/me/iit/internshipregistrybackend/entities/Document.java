@@ -22,8 +22,8 @@ public class Document {
   @Column(name = "file_extension", nullable = false)
   private String fileExtension;
 
-  @Column(name = "file_path", nullable = false)
-  private String filePath;
+  @Column(nullable = false)
+  private String filepath;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "internship_id", referencedColumnName = "id", nullable = false)
