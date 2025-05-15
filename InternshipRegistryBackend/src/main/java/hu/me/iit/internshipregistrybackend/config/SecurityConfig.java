@@ -11,7 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,9 +33,11 @@ public class SecurityConfig {
                         .configurationSource(corsConfigurationSource())
                 )
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .disable()
                 )
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -53,7 +54,8 @@ public class SecurityConfig {
                             responseBody.put("status", "ok");
                             responseBody.put("username", auth.getName());
                             responseBody.put("roles", roles);
-                            res.getWriter().write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody));
+                            res.getWriter().write(mapper.writerWithDefaultPrettyPrinter()
+                                    .writeValueAsString(responseBody));
                         })
                         .failureHandler((req, res, ex) -> {
                             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -63,13 +65,17 @@ public class SecurityConfig {
                             responseBody.put("status", "unauthorized");
                             responseBody.put("username", null);
                             responseBody.put("roles", null);
-                            res.getWriter().write(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseBody));
+                            res.getWriter().write(mapper.writerWithDefaultPrettyPrinter()
+                                    .writeValueAsString(responseBody));
                         })
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .deleteCookies("JSESSIONID", "XSRF-TOKEN", "SESSION")
                         .invalidateHttpSession(true)
+                        .logoutSuccessHandler((req, res, auth) -> {
+                            res.setStatus(HttpServletResponse.SC_OK);
+                        })
                 )
 
                 .exceptionHandling(exception -> exception
