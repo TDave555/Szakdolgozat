@@ -14,8 +14,10 @@ import java.util.List;
 @Builder
 public class InternshipDto {
 
+    @NotNull
     private Long id;
 
+    @NotNull
     private LocalDate startDate;
 
     private LocalDate endDate;

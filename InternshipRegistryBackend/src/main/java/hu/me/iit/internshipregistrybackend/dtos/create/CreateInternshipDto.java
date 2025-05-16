@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +13,7 @@ import java.util.List;
 @Builder
 public class CreateInternshipDto {
 
+    @NotNull
     private LocalDate startDate;
 
     private LocalDate endDate;
