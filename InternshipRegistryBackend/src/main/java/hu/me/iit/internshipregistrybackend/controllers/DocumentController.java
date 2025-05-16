@@ -36,10 +36,10 @@ public class DocumentController {
 
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) {
-        Resource file = documentService.sendFile(id);
+        Resource resource = documentService.sendFile(id);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @DeleteMapping("/{id}")

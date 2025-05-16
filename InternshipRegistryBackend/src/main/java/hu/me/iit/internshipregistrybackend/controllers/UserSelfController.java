@@ -32,4 +32,9 @@ public class UserSelfController {
         return ResponseEntity.ok(userService.updatePassword(principal.getName(), passwordDto.getPassword()));
     }
 
+    @GetMapping("/auth")
+    public ResponseEntity<?> isAuthenticatedUser() {
+            return ResponseEntity.ok("{\"status\":\"ok\"}");
+    }
+
 }
