@@ -31,7 +31,13 @@ public class InternshipService {
         return internshipMapper.toDtoList(internshipRepository.findAllByCompleted(completed));
     }
 
-    public List<InternshipDto> getAllInternshipsInYear(int year) {
+    public List<InternshipDto> getAllInternshipsByYearAndCompletion(int year, boolean completed) {
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
+        return internshipMapper.toDtoList(internshipRepository.findAllByStartDateRangeAndCompleted(start, end, completed));
+    }
+
+    public List<InternshipDto> getAllInternshipsByYear(int year) {
         LocalDate start = LocalDate.of(year, 1, 1);
         LocalDate end = LocalDate.of(year, 12, 31);
         return internshipMapper.toDtoList(internshipRepository.findAllByStartDateRange(start, end));

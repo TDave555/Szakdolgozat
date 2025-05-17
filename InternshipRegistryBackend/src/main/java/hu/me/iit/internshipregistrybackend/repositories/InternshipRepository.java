@@ -17,5 +17,11 @@ public interface InternshipRepository extends JpaRepository<Internship, Long> {
     List<Internship> findAllByStartDateRange(@Param("firstDate") LocalDate firstDate,
                                           @Param("secondDate") LocalDate secondDate);
 
+    @Query("SELECT i FROM Internship i " +
+            "WHERE i.startDate BETWEEN :firstDate AND :secondDate AND i.completed = :completed")
+    List<Internship> findAllByStartDateRangeAndCompleted(@Param("firstDate") LocalDate firstDate,
+                                                         @Param("secondDate") LocalDate secondDate,
+                                                         @Param("completed") boolean completed);
+
 
 }
