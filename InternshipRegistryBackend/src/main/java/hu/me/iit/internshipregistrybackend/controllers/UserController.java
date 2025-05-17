@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok(userService.updatePassword(username, passwordDto));
     }
 
-    @PatchMapping("/{username}/username")
+    @PatchMapping("/{username}/role")
     public ResponseEntity<UserDto> updateUserRole(@PathVariable String username, @Valid @RequestBody UpdateUserDto userDto) {
         return ResponseEntity.ok(userService.updateRole(username, userDto));
     }
