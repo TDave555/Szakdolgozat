@@ -19,9 +19,9 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
-    @GetMapping
-    public ResponseEntity<List<DocumentDto>> getAllDocuments() {
-        return ResponseEntity.ok(documentService.getAllDocuments());
+    @GetMapping("/byinternship/{internshipId}")
+    public ResponseEntity<List<DocumentDto>> getAllDocumentsByInternshipId(@PathVariable Long internshipId) {
+        return ResponseEntity.ok(documentService.getAllDocumentsByInternshipId(internshipId));
     }
 
     @GetMapping("/{id}")
@@ -35,7 +35,7 @@ public class DocumentController {
     }
 
     @GetMapping("/{id}/download")
-    public ResponseEntity<Resource> downloadDocument(@PathVariable Long id) {
+    public ResponseEntity<Resource> sendDocument(@PathVariable Long id) {
         Resource resource = documentService.sendFile(id);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")

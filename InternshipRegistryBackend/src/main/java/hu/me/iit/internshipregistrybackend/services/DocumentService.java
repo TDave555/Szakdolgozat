@@ -34,11 +34,11 @@ public class DocumentService {
             "application/pdf",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     private final Tika tika = new Tika();
-
     private final Path rootDirectory = Paths.get("InternshipDocuments");
 
-    public List<DocumentDto> getAllDocuments() {
-        return documentMapper.toDtoList(documentRepository.findAll());
+    public List<DocumentDto> getAllDocumentsByInternshipId(Long internshipId) {
+        List<Document> documents = documentRepository.findAllByInternshipId(internshipId);
+        return documentMapper.toDtoList(documents);
     }
 
     public DocumentDto getDocument(Long id) {
@@ -109,14 +109,21 @@ public class DocumentService {
             Path filePath = Path.of(document.getFilepath());
             resource = new UrlResource(filePath.toUri());
         } catch (MalformedURLException e) {
-            throw new AppException("File could not be provided.", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new AppException("File could not be provided", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
         if (resource.exists() && resource.isReadable())
             return resource;
         else
             throw new AppException("Could not read file: "
                     + document.getTitle() + document.getFileExtension(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public Resource sendFileToStudent(Long id, String username) {
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new AppException("Document not found", HttpStatus.NOT_FOUND));
+        if (!document.getInternship().getStudent().getUsername().equals(username))
+            throw new AppException("User is not authorized to view this file", HttpStatus.FORBIDDEN);
+        return sendFile(id);
     }
 
     //no update method, just delete and reupload
@@ -133,4 +140,13 @@ public class DocumentService {
         }
         documentRepository.deleteById(id);
     }
+
+    public void deleteDocumentByUser(Long id, String username) {
+        Document document = documentRepository.findById(id)
+                .orElseThrow(() -> new AppException("Document not found", HttpStatus.NOT_FOUND));
+        if (!document.getInternship().getStudent().getUsername().equals(username))
+            throw new AppException("User is not authorized to delete this file", HttpStatus.FORBIDDEN);
+        deleteDocument(id);
+    }
+
 }

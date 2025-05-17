@@ -40,7 +40,7 @@ public class InternshipService {
                 .companyInstructor(internshipDto.getCompanyInstructor())
                 .grade(internshipDto.getGrade())
                 .certificateDate(internshipDto.getCertificateDate())
-                .completed(false)
+                .completed(internshipDto.isCompleted())
                 .student(studentRepository.findById(internshipDto.getStudentId())
                         .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND)))
                 .company(companyRepository.findById(internshipDto.getCompanyId())
@@ -63,6 +63,36 @@ public class InternshipService {
         updateInternship.setCompany(companyRepository.findById(internshipDto.getCompanyId())
                 .orElseThrow(() -> new AppException("Company not found", HttpStatus.NOT_FOUND)));
         return internshipMapper.toDto(internshipRepository.save(updateInternship));
+    }
+
+    public InternshipDto updateInternshipByStudent(Long id, CreateUpdateInternshipDto internshipDto) {
+        Internship updateInternship = internshipRepository.findById(id)
+                .orElseThrow(() -> new AppException("Internship not found", HttpStatus.NOT_FOUND));
+        //student cannot change student id, grade, certificate and completion
+        updateInternship.setStartDate(internshipDto.getStartDate());
+        updateInternship.setEndDate(internshipDto.getEndDate());
+        updateInternship.setWeeks(internshipDto.getWeeks());
+        updateInternship.setCompanyInstructor(internshipDto.getCompanyInstructor());
+        updateInternship.setCompany(companyRepository.findById(internshipDto.getCompanyId())
+                .orElseThrow(() -> new AppException("Company not found", HttpStatus.NOT_FOUND)));
+        return internshipMapper.toDto(internshipRepository.save(updateInternship));
+    }
+
+    public InternshipDto createInternshipByStudent(Long studentId, CreateUpdateInternshipDto internshipDto) {
+        //student cannot set grade, certificate and completion
+        Internship createInternship = Internship.builder()
+                .startDate(internshipDto.getStartDate())
+                .endDate(internshipDto.getEndDate())
+                .weeks(internshipDto.getWeeks())
+                .companyInstructor(internshipDto.getCompanyInstructor())
+                .completed(false)
+                .student(studentRepository.findById(studentId)
+                        .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND)))
+                .company(companyRepository.findById(internshipDto.getCompanyId())
+                        .orElseThrow(() -> new AppException("Company not found", HttpStatus.NOT_FOUND)))
+                .build();
+        return internshipMapper.toDto(internshipRepository.save(createInternship));
+
     }
 
     public void deleteInternship(Long id) {
