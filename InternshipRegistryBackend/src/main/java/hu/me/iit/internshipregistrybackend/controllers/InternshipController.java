@@ -23,12 +23,12 @@ public class InternshipController {
         return ResponseEntity.ok(internshipService.getAllInternships());
     }
 
-    @GetMapping
+    @GetMapping(params = "year")
     public ResponseEntity<List<InternshipDto>> getAllInternshipsByYear(@RequestParam int year) {
         return ResponseEntity.ok(internshipService.getAllInternshipsInYear(year));
     }
 
-    @GetMapping("/completed")
+    @GetMapping(params = "completed")
     public ResponseEntity<List<InternshipDto>> getAllInternshipsByCompletion(@RequestParam boolean completed) {
         return ResponseEntity.ok(internshipService.getAllInternshipsByCompletion(completed));
     }
