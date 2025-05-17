@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -42,6 +41,4 @@ public class InternshipDto {
 
     @NotNull
     private CompanyDto company;
-
-    private List<DocumentDto> documents;
 }
