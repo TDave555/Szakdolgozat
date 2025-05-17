@@ -2,13 +2,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
-import { UserRole } from '../models/user-role.enum';
 import { environment } from '../../environments/environment';
 
 interface LoginResponse {
   status: string;
   username: string;
   roles: string;
+}
+
+enum UserRole {
+  ADMIN = 'ROLE_ADMIN',
+  COORDINATOR = 'ROLE_COORDINATOR',
+  STUDENT = 'ROLE_STUDENT',
 }
 
 @Injectable({ providedIn: 'root' })
@@ -19,12 +24,30 @@ export class AuthService {
   userRoles$ = this.userRolesSubject.asObservable();
   userName$ = this.userNameSubject.asObservable();
 
-   constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.restoreSession();
+  }
+
+  restoreSession(): void {
+    const roles = localStorage.getItem('roles');
+    const username = localStorage.getItem('username');
+    if (roles && username) {
+      const parsedRoles: UserRole[] = JSON.parse(roles);
+      this.userRolesSubject.next(parsedRoles);
+      this.userNameSubject.next(username);
+    } else {
+      this.isAuthenticated().subscribe(isAuth => {
+        if (isAuth) {
+          this.logout();
+        }
+      });
+    }
+  }
 
   isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${environment.apiUrl}/users/me`, { withCredentials: true }).pipe(
-      map(() => true),
-      catchError(() => of(false))
+    return this.http.get(`${environment.apiUrl}/users/me/auth`, { withCredentials: true }).pipe(
+      map(response => true),
+      catchError(err => of(false))
     );
   }
 
@@ -53,7 +76,7 @@ export class AuthService {
       }
     ).pipe(
       tap(response => {
-        const userRoles: UserRole[] = response.roles.split(",")
+        const rolesFromResponse: UserRole[] = response.roles.split(",")
         .map(role => {
           const mappedRole = Object.values(UserRole).find(userRole => userRole === role.trim());
           if (mappedRole === undefined) {
@@ -61,12 +84,13 @@ export class AuthService {
           }
           return mappedRole;
         }).filter(role => role !== undefined);
+        //developement console.log
         console.log('Login status:', response.status);
-        console.log('Username: ', username, ', roles:', userRoles);
+        console.log('Username: ', response.username, ', roles:', rolesFromResponse);
+        localStorage.setItem('username', username);
+        localStorage.setItem('roles', JSON.stringify(rolesFromResponse));
         this.userNameSubject.next(response.username);
-        this.userRolesSubject.next(userRoles);
-        const authenticated = this.isAuthenticated();
-        console.log('Authenticated:', authenticated);
+        this.userRolesSubject.next(rolesFromResponse);
       })
     );
   }
@@ -76,6 +100,8 @@ export class AuthService {
     .subscribe({
       next: () => {
         console.log("User logged out successfully");
+        localStorage.removeItem('username');
+        localStorage.removeItem('roles');
         this.userRolesSubject.next(null);
         this.userNameSubject.next(null);
         this.router.navigate(['/login']);
