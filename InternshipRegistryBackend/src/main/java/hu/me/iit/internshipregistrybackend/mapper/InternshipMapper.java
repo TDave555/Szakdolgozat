@@ -7,10 +7,8 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-        uses = { StudentMapper.class, CompanyMapper.class, DocumentMapper.class })
+        uses = { StudentMapper.class, CompanyMapper.class })
 public interface InternshipMapper {
-
-    Internship toEntity(InternshipDto internshipDto);
 
     InternshipDto toDto(Internship internship);
 

@@ -7,10 +7,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = InternshipFetcher.class)
+@Mapper(componentModel = "spring")
 public interface DocumentMapper {
-    @Mapping(source = "internshipId", target = "internship.id")
-    Document toEntity(DocumentDto documentDto);
 
     @Mapping(source = "internship.id", target = "internshipId")
     DocumentDto toDto(Document document);

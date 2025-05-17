@@ -7,12 +7,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = InternshipFetcher.class)
+@Mapper(componentModel = "spring")
 public interface StudentMapper {
-
-    @Mapping(source = "internshipId", target = "internship.id")
-    @Mapping(target = "password", ignore = true)
-    Student toEntity(StudentDto studentDto);
 
     @Mapping(source = "internship.id", target = "internshipId")
     StudentDto toDto(Student student);

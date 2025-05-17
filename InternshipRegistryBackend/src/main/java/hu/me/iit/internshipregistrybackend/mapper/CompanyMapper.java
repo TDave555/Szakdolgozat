@@ -9,8 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CompanyMapper {
 
-    Company toEntity(CompanyDto companyDto);
-
     CompanyDto toDto(Company company);
 
     List<CompanyDto> toDtoList(List<Company> companies);
