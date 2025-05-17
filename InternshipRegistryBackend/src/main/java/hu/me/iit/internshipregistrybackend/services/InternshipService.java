@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,6 +25,16 @@ public class InternshipService {
 
     public List<InternshipDto> getAllInternships() {
         return internshipMapper.toDtoList(internshipRepository.findAll());
+    }
+
+    public List<InternshipDto> getAllInternshipsByCompletion(boolean completed) {
+        return internshipMapper.toDtoList(internshipRepository.findAllByCompleted(completed));
+    }
+
+    public List<InternshipDto> getAllInternshipsInYear(int year) {
+        LocalDate start = LocalDate.of(year, 1, 1);
+        LocalDate end = LocalDate.of(year, 12, 31);
+        return internshipMapper.toDtoList(internshipRepository.findAllByStartDateRange(start, end));
     }
 
     public InternshipDto getInternship(Long id) {
