@@ -1,4 +1,4 @@
-package hu.me.iit.internshipregistrybackend.dtos.create;
+package hu.me.iit.internshipregistrybackend.dtos.create_update;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateCompanyDto {
+public class CreateUpdateCompanyDto {
 
     @NotBlank
     private String name;

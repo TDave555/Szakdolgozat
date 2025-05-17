@@ -1,7 +1,8 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateStudentDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.StudentDto;
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateStudentDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateStudentDto;
 import hu.me.iit.internshipregistrybackend.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +26,23 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<StudentDto> getStudent(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudent(id));
     }
 
-    @GetMapping("/neptuncode/{neptuncode}")
+    @GetMapping("/{neptuncode}")
     public ResponseEntity<StudentDto> getStudentByNeptuncode(@PathVariable String neptuncode) {
         return ResponseEntity.ok(studentService.getByNeptuncode(neptuncode));
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<StudentDto> getStudentByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(studentService.getByUsername(username));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @Valid @RequestBody CreateStudentDto studentDto) {
+    public ResponseEntity<StudentDto> updateStudent(@PathVariable Long id, @Valid @RequestBody UpdateStudentDto studentDto) {
         StudentDto updatedStudent = studentService.updateStudent(id, studentDto);
         return ResponseEntity.ok(updatedStudent);
     }

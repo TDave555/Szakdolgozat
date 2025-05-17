@@ -1,6 +1,6 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateCompanyDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateUpdateCompanyDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.CompanyDto;
 import hu.me.iit.internshipregistrybackend.services.CompanyService;
 import jakarta.validation.Valid;
@@ -36,12 +36,12 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CompanyDto> updateCompany(@PathVariable Long id, @Valid @RequestBody CreateCompanyDto companyDto) {
+    public ResponseEntity<CompanyDto> updateCompany(@PathVariable Long id, @Valid @RequestBody CreateUpdateCompanyDto companyDto) {
         return ResponseEntity.ok(companyService.updateCompany(id, companyDto));
     }
 
     @PostMapping
-    public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CreateCompanyDto companyDto) {
+    public ResponseEntity<CompanyDto> createCompany(@Valid @RequestBody CreateUpdateCompanyDto companyDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(companyService.createCompany(companyDto));
     }
 

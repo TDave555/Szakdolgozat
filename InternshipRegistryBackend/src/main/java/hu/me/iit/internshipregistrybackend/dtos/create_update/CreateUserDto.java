@@ -1,20 +1,27 @@
-package hu.me.iit.internshipregistrybackend.dtos.update;
+package hu.me.iit.internshipregistrybackend.dtos.create_update;
 
 import hu.me.iit.internshipregistrybackend.enums.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class UpdateUserDto {
+public class CreateUserDto {
 
     @NotBlank
     @Size(max = 25)
     private String username;
+
+    @NotBlank
+    @Size(min = 6, max = 25)
+    private String password;
 
     @NotNull
     private Role role;

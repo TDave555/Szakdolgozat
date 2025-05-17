@@ -1,8 +1,9 @@
 package hu.me.iit.internshipregistrybackend.services;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateUserDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateUserDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateUserPasswordDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.UserDto;
-import hu.me.iit.internshipregistrybackend.dtos.update.UpdateUserDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateUserDto;
 import hu.me.iit.internshipregistrybackend.entities.User;
 import hu.me.iit.internshipregistrybackend.exceptions.AppException;
 import hu.me.iit.internshipregistrybackend.mapper.UserMapper;
@@ -25,12 +26,6 @@ public class UserService {
         return userMapper.toDtoList(userRepository.findAll());
     }
 
-    public UserDto getUser(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
-        return userMapper.toDto(user);
-    }
-
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException("User with username: '" + username + "' not found",
@@ -49,36 +44,39 @@ public class UserService {
         return userMapper.toDto(userRepository.save(createUser));
     }
 
-    public UserDto updateUser(Long id, UpdateUserDto userDto) {
-        User updateUser = userRepository.findById(id)
-                        .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
-        if(!updateUser.getUsername().equals(userDto.getUsername())) {
-            if(userRepository.existsByUsername(userDto.getUsername()))
-                throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
-            updateUser.setUsername(userDto.getUsername());
-        }
-            updateUser.setRole(userDto.getRole());
-
-        return userMapper.toDto(userRepository.save(updateUser));
-    }
-
-    public UserDto updateUsername(String oldUsername, String newUsername) {
-        User updateUser = userRepository.findByUsername(oldUsername).orElseThrow(() ->
+    public UserDto updateUsername(String oldUsername, UpdateUserDto userDto) {
+        User patchUser = userRepository.findByUsername(oldUsername).orElseThrow(() ->
                 new AppException("User not found", HttpStatus.NOT_FOUND));
-        if(userRepository.existsByUsername(newUsername))
+        if(userRepository.existsByUsername(userDto.getUsername()))
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
-        updateUser.setUsername(newUsername);
-        return userMapper.toDto(userRepository.save(updateUser));
+        int rows = userRepository.updateUsername(patchUser.getId(), userDto.getUsername());
+        if(rows != 1)
+            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        patchUser.setUsername(userDto.getUsername());
+        return userMapper.toDto(patchUser);
     }
 
-    public UserDto updatePassword(String username, String newPassword) {
-        User updateUser = userRepository.findByUsername(username).orElseThrow(() ->
+    public UserDto updatePassword(String username, UpdateUserPasswordDto passwordDto) {
+        User patchUser = userRepository.findByUsername(username).orElseThrow(() ->
                 new AppException("User not found", HttpStatus.NOT_FOUND));
-        updateUser.setPassword(passwordEncoder.encode(newPassword));
-        return userMapper.toDto(userRepository.save(updateUser));
+        int rows = userRepository.updatePassword(patchUser.getId(), passwordEncoder.encode(passwordDto.getPassword()));
+        if(rows != 1)
+            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        return userMapper.toDto(patchUser);
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public UserDto updateRole(String username, UpdateUserDto userDto) {
+        User patchUser = userRepository.findByUsername(username).orElseThrow(() ->
+                new AppException("User not found", HttpStatus.NOT_FOUND));
+        int rows = userRepository.updateRole(patchUser.getId(), userDto.getRole());
+        if(rows != 1)
+            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        return userMapper.toDto(patchUser);
+    }
+
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new AppException("User not found", HttpStatus.NOT_FOUND));
+        userRepository.deleteById(user.getId());
     }
 }

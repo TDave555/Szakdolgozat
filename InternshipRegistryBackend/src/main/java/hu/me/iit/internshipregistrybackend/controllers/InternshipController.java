@@ -1,6 +1,6 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateInternshipDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateUpdateInternshipDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.InternshipDto;
 import hu.me.iit.internshipregistrybackend.services.InternshipService;
 import jakarta.validation.Valid;
@@ -29,12 +29,12 @@ public class InternshipController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InternshipDto> updateInternship(@PathVariable Long id, @Valid @RequestBody CreateInternshipDto internshipDto) {
+    public ResponseEntity<InternshipDto> updateInternship(@PathVariable Long id, @Valid @RequestBody CreateUpdateInternshipDto internshipDto) {
         return ResponseEntity.ok(internshipService.updateInternship(id, internshipDto));
     }
 
     @PostMapping
-    public ResponseEntity<InternshipDto> createInternship(@Valid @RequestBody CreateInternshipDto internshipDto) {
+    public ResponseEntity<InternshipDto> createInternship(@Valid @RequestBody CreateUpdateInternshipDto internshipDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(internshipService.createInternship(internshipDto));
     }
 

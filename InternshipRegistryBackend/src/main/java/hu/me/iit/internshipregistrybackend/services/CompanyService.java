@@ -1,6 +1,6 @@
 package hu.me.iit.internshipregistrybackend.services;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateCompanyDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateUpdateCompanyDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.CompanyDto;
 import hu.me.iit.internshipregistrybackend.entities.Company;
 import hu.me.iit.internshipregistrybackend.exceptions.AppException;
@@ -34,7 +34,7 @@ public class CompanyService {
         return companyMapper.toDto(company);
     }
 
-    public CompanyDto createCompany(CreateCompanyDto companyDto) {
+    public CompanyDto createCompany(CreateUpdateCompanyDto companyDto) {
         Company createCompany = Company.builder()
                 .name(companyDto.getName())
                 .address(companyDto.getAddress())
@@ -44,7 +44,7 @@ public class CompanyService {
         return companyMapper.toDto(companyRepository.save(createCompany));
     }
 
-    public CompanyDto updateCompany(Long id, CreateCompanyDto companyDto) {
+    public CompanyDto updateCompany(Long id, CreateUpdateCompanyDto companyDto) {
         Company updateCompany = companyRepository.findById(id)
                         .orElseThrow(() -> new AppException("Company not found", HttpStatus.NOT_FOUND));
         updateCompany.setName(companyDto.getName());

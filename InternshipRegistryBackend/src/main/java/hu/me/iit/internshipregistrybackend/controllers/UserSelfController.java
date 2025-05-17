@@ -1,8 +1,8 @@
 package hu.me.iit.internshipregistrybackend.controllers;
 
 import hu.me.iit.internshipregistrybackend.dtos.read.UserDto;
-import hu.me.iit.internshipregistrybackend.dtos.update.UpdateUserDto;
-import hu.me.iit.internshipregistrybackend.dtos.update.UpdateUserPasswordDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateUserDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateUserPasswordDto;
 import hu.me.iit.internshipregistrybackend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +24,12 @@ public class UserSelfController {
 
     @PatchMapping("/username")
     public ResponseEntity<UserDto> updateUsername(@RequestBody @Valid UpdateUserDto userDto, Principal principal) {
-        return ResponseEntity.ok(userService.updateUsername(principal.getName(), userDto.getUsername()));
+        return ResponseEntity.ok(userService.updateUsername(principal.getName(), userDto));
     }
 
     @PatchMapping("/password")
     public ResponseEntity<UserDto> updatePassword(@RequestBody @Valid UpdateUserPasswordDto passwordDto, Principal principal) {
-        return ResponseEntity.ok(userService.updatePassword(principal.getName(), passwordDto.getPassword()));
+        return ResponseEntity.ok(userService.updatePassword(principal.getName(), passwordDto));
     }
 
     @GetMapping("/auth")

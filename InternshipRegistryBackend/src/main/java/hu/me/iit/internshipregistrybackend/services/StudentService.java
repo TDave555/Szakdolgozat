@@ -1,6 +1,7 @@
 package hu.me.iit.internshipregistrybackend.services;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateStudentDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateStudentDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.UpdateStudentDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.StudentDto;
 import hu.me.iit.internshipregistrybackend.entities.Student;
 import hu.me.iit.internshipregistrybackend.exceptions.AppException;
@@ -38,6 +39,13 @@ public class StudentService {
         return studentMapper.toDto(student);
     }
 
+    public StudentDto getByUsername(String username) {
+        Student student = studentRepository.findByUsername(username)
+                .orElseThrow(() -> new AppException("Student with username: '" + username + "' not found",
+                        HttpStatus.NOT_FOUND));
+        return studentMapper.toDto(student);
+    }
+
     public StudentDto createStudent(CreateStudentDto studentDto) {
         Student createStudent = Student.builder()
                 .username(studentDto.getUsername())
@@ -51,14 +59,17 @@ public class StudentService {
         return studentMapper.toDto(studentRepository.save(createStudent));
     }
 
-    public StudentDto updateStudent(Long id, CreateStudentDto studentDto) {
+    public StudentDto updateStudent(Long id, UpdateStudentDto studentDto) {
         Student updateStudent = studentRepository.findById(id)
                 .orElseThrow(() -> new AppException("Student not found", HttpStatus.NOT_FOUND));
-        updateStudent.setUsername(studentDto.getUsername());
-        updateStudent.setPassword(passwordEncoder.encode(studentDto.getPassword()));
+        //all user-related fields managed by userservice
         updateStudent.setName(studentDto.getName());
         updateStudent.setSpecialization(studentDto.getSpecialization());
-        updateStudent.setNeptuncode(studentDto.getNeptuncode());
+        if (!updateStudent.getNeptuncode().equals(studentDto.getNeptuncode())) {
+            if (studentRepository.existsByNeptuncode(studentDto.getNeptuncode()))
+                throw new AppException("Neptuncode already exists", HttpStatus.BAD_REQUEST);
+            updateStudent.setNeptuncode(studentDto.getNeptuncode());
+        }
 
         return studentMapper.toDto(studentRepository.save(updateStudent));
     }

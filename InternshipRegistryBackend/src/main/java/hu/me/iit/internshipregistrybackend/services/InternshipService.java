@@ -1,6 +1,6 @@
 package hu.me.iit.internshipregistrybackend.services;
 
-import hu.me.iit.internshipregistrybackend.dtos.create.CreateInternshipDto;
+import hu.me.iit.internshipregistrybackend.dtos.create_update.CreateUpdateInternshipDto;
 import hu.me.iit.internshipregistrybackend.dtos.read.InternshipDto;
 import hu.me.iit.internshipregistrybackend.entities.Internship;
 import hu.me.iit.internshipregistrybackend.exceptions.AppException;
@@ -32,7 +32,7 @@ public class InternshipService {
         return internshipMapper.toDto(internship);
     }
 
-    public InternshipDto createInternship(CreateInternshipDto internshipDto) {
+    public InternshipDto createInternship(CreateUpdateInternshipDto internshipDto) {
         Internship createInternship = Internship.builder()
                 .startDate(internshipDto.getStartDate())
                 .endDate(internshipDto.getEndDate())
@@ -49,7 +49,7 @@ public class InternshipService {
         return internshipMapper.toDto(internshipRepository.save(createInternship));
     }
 
-    public InternshipDto updateInternship(Long id, CreateInternshipDto internshipDto) {
+    public InternshipDto updateInternship(Long id, CreateUpdateInternshipDto internshipDto) {
         Internship updateInternship = internshipRepository.findById(id)
                         .orElseThrow(() -> new AppException("Internship not found", HttpStatus.NOT_FOUND));
         updateInternship.setStartDate(internshipDto.getStartDate());

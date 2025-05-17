@@ -1,4 +1,4 @@
-package hu.me.iit.internshipregistrybackend.dtos.create;
+package hu.me.iit.internshipregistrybackend.dtos.create_update;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreateInternshipDto {
+public class CreateUpdateInternshipDto {
 
     @NotNull
     private LocalDate startDate;
