@@ -31,7 +31,7 @@ export class LoginComponent {
           console.log("Login successful!");
           this.router.navigate(['home']);
         },
-        error: err => {
+        error: (err: any) => {
           console.error("Login failed", err);
           this.errorMessage = "Invalid username or password.";
         }

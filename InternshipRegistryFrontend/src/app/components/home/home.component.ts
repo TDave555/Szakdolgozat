@@ -11,16 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent {
 
-  constructor(protected authService: AuthService, protected router  : Router) {
-    console.log("AuthService instance:", this.authService);
-   }
-
-  onLogout(): void {
-    this.authService.logout();
-  }
-
-  isAdmin(): boolean {
-    return this.authService.isAdmin();
-  }
-
+  constructor(protected authService: AuthService, private router  : Router) {}
 }
