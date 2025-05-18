@@ -78,9 +78,9 @@ public class DocumentService {
             //ensuring unique filename
             title = filename.substring(0, filename.lastIndexOf('.'));
             fileExtension = filename.substring(filename.lastIndexOf('.'));
-            title = title + LocalDateTime.now().
-                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-            filename = title + fileExtension;
+            filename = title + LocalDateTime.now().format(DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd_HH-mm-ss")) +
+                    fileExtension;
 
             Path destFilepath = targetDirectory.resolve(filename);
             filepath = destFilepath.toString();
@@ -93,8 +93,8 @@ public class DocumentService {
             throw new AppException("File type not allowed", HttpStatus.BAD_REQUEST);
 
         Document createDocument = Document.builder()
-                .title(title)
-                .fileExtension(fileExtension)
+                .title(title+fileExtension)
+                .fileExtension(fileExtension.replace(".", ""))
                 .filepath(filepath)
                 .internship(internship)
                 .build();
