@@ -3,23 +3,26 @@
       <a class="navbar-brand text-center" routerLink="profile">Welcome <br> <strong>{{ currentUser }}</strong></a>
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isStudent">
+        <li class="nav-item" *ngIf="authService.isStudent()">
           <a class="nav-link" routerLink="/my-internship">My Internship</a>
         </li>
         <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/admin/users">Manage Users</a>
+          <a class="nav-link" routerLink="/users/list">List users</a>
+          <a class="nav-link" routerLink="/users/create">Create user</a>
+        </li>
+        <li class="nav-item" *ngIf="authService.isCoordinator()">
+          <a class="nav-link" routerLink="/students/list">List users</a>
+          <a class="nav-link" routerLink="/studnets/create">Create student</a>
         </li>
         <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/admin/students">Manage Students</a>
+          <a class="nav-link" routerLink="/internsips/select">List users</a>
+          <a class="nav-link" routerLink="/internships/list">List internships</a>
+          <a class="nav-link" routerLink="/internships/create">Create internship</a>
         </li>
         <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/admin/companies">Manage Companies</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/admin/internships">Manage Internships</a>
+          <a class="nav-link" routerLink="/companies/list">List companies</a>
+          <a class="nav-link" routerLink="/companies/create">Create company</a>
+
         </li>
       </ul>
       <button class="btn btn-outline-danger" (click)="authService.logout()">

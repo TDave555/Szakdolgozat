@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div *ngIf="message" class="fixed-bottom alert mb-3" [ngClass]="{'alert-success': !isError, 'alert-danger': isError}" role="alert">
+        {{ message }}
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">Create New User</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username:</label>
+              <input id="username" type="text" formControlName="username" class="form-control" placeholder="Enter username" />
+              <div *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched" class="text-danger mt-1">
+                <div *ngIf="userForm.get('username')?.errors?.['required']">Username is required.</div>
+                <div *ngIf="userForm.get('username')?.errors?.['maxlength']">Username cannot be more than 25 characters.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Password:</label>
+              <input id="password" type="password" formControlName="password" class="form-control" placeholder="Enter password" />
+              <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="text-danger mt-1">
+                <div *ngIf="userForm.get('password')?.errors?.['required']">Password is required.</div>
+                <div *ngIf="userForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
+                <div *ngIf="userForm.get('password')?.errors?.['maxlength']">Password cannot be more than 25 characters.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="role" class="form-label">Role:</label>
+              <select id="role" formControlName="role" class="form-select">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+              <div *ngIf="userForm.get('role')?.invalid && userForm.get('role')?.touched" class="text-danger mt-1">
+                <div *ngIf="userForm.get('role')?.errors?.['required']">Role is required.</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Create User</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/users'])">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

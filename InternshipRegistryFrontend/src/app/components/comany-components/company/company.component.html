@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Company Details</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Loading company details...</div>
+  <div *ngIf="error" class="alert alert-danger">Error: {{ error }}</div>
+
+  <div *ngIf="!loading && !error && company">
+    <form [formGroup]="companyForm" (ngSubmit)="updateCompany()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" id="name" formControlName="name" class="form-control" />
+        <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="text-danger">
+          Name is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address:</label>
+        <input type="text" id="address" formControlName="address" class="form-control" />
+        <div *ngIf="companyForm.get('address')?.invalid && companyForm.get('address')?.touched" class="text-danger">
+          Address is required.
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="active" class="form-label">Active:</label>
+        <select id="active" formControlName="active" class="form-select">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Company</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="goBackToList()">Back to List</button>
+    </form>
+  </div>
+</div>

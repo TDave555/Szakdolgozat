@@ -6,12 +6,12 @@ import { UserAuthRole } from "./user-auth-role.enum";
 
 
 @Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
+export class CoordinatorGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean> {
     return this.authService.userRoles$.pipe(
-      map(roles => roles?.includes(UserAuthRole.ADMIN) || false)
+      map(roles => roles?.includes(UserAuthRole.COORDINATOR) || false)
    );
   }
 }

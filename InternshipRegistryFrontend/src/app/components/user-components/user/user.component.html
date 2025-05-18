@@ -8,33 +8,19 @@
 
       <div *ngIf="user" class="card mb-4">
         <div class="card-header bg-primary text-white">
-          <h3 *ngIf="!isStudent" class="card-title mb-0">User Information</h3>
-          <h3 *ngIf="isStudent" class="card-title mb-0">User Information</h3>
+          <h3 class="card-title mb-0">User Details</h3>
         </div>
         <div class="card-body">
-          <div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>ID:</strong> {{ user.id }}</li>
-              <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
-              <li class="list-group-item"><strong>Role:</strong> <span class="badge bg-info text-dark">{{ user.role }}</span></li>
-            </ul>
-          </div>
-          <div *ngIf="isStudent && student">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Name:</strong> {{ student.name }}</li>
-              <li class="list-group-item"><strong>Neptun Code:</strong> {{ student.neptuncode }}</li>
-              <li class="list-group-item"><strong>Specialization:</strong> {{ student.specialization }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header bg-secondary text-white">
-          <h3 class="card-title mb-0">Update Profile</h3>
-        </div>
-        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>ID:</strong> {{ user.id }}</li>
+            <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+            <li class="list-group-item"><strong>Role:</strong> <span class="badge bg-info text-dark">{{ user.role }}</span></li>
+          </ul>
+
+          <hr class="my-4">
+
           <form [formGroup]="usernameForm" (ngSubmit)="updateUsername()" class="mb-4">
-            <h4 class="mb-3">Change Username</h4>
+            <h4 class="mb-3">Update Username</h4>
             <div class="mb-3">
               <label for="username" class="form-label">New Username:</label>
               <input id="username" type="text" formControlName="username" class="form-control" placeholder="Enter new username" />
@@ -48,7 +34,7 @@
 
           <hr class="my-4">
 
-          <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+          <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()" class="mb-4">
             <h4 class="mb-3">Change Password</h4>
             <div class="mb-3">
               <label for="password" class="form-label">New Password:</label>
@@ -61,8 +47,33 @@
             </div>
             <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>
           </form>
+
+          <hr class="my-4">
+
+          <form [formGroup]="roleForm" (ngSubmit)="updateRole()" class="mb-4">
+            <h4 class="mb-3">Update Role</h4>
+            <div class="mb-3">
+              <label for="role" class="form-label">Select Role:</label>
+              <select id="role" formControlName="role" class="form-select">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+              <div *ngIf="roleForm.get('role')?.invalid && roleForm.get('role')?.touched" class="text-danger mt-1">
+                <div *ngIf="roleForm.get('role')?.errors?.['required']">Role is required.</div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="roleForm.invalid">Update Role</button>
+          </form>
+
+          <hr class="my-4">
+
+          <button (click)="goBackToList()" class="btn btn-secondary">Back to User List</button>
         </div>
       </div>
+
+      <div *ngIf="!user" class="alert alert-info">
+        Loading user details or user not found...
+      </div>
+
     </div>
   </div>
 </div>

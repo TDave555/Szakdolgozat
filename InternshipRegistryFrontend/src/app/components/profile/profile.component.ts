@@ -8,6 +8,7 @@ import { StudentDto } from '../../models/student-dto.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UpdateUserDto } from '../../models/user-update-dto';
 import { UpdateUserPasswordDto } from '../../models/user-password-update-dto';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -17,29 +18,21 @@ import { UpdateUserPasswordDto } from '../../models/user-password-update-dto';
 })
 export class ProfileComponent implements OnInit {
 
- user: UserDto | null = null;
+  user: UserDto | null = null;
   student: StudentDto | null = null;
   isStudent: boolean = false;
 
   usernameForm: FormGroup;
   passwordForm: FormGroup;
 
-  // Global message for initial load or general issues
-  globalMessage: string = '';
-  isGlobalError: boolean = false;
-
-  // Messages for username update form
-  usernameMessage: string = '';
-  isUsernameError: boolean = false;
-
-  // Messages for password update form
-  passwordMessage: string = '';
-  isPasswordError: boolean = false;
+  message: string = '';
+  isError: boolean = false;
 
   constructor(
     private userSelfService: UserSelfService,
     private studentSelfService: StudentSelfService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {
     this.usernameForm = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(25)]]
@@ -65,114 +58,77 @@ export class ProfileComponent implements OnInit {
               this.student = student;
             },
             error: (error: HttpErrorResponse) => {
-              this.showGlobalError('Failed to load student details: ' + error.message);
+              this.showError('Failed to load student details: ' + error.status);
               console.error('Error loading student details:', error);
             }
           });
         }
       },
       error: (error: HttpErrorResponse) => {
-        this.showGlobalError('Failed to load user details: ' + error.message);
+        this.showError('Failed to load user details: ' + error.status);
         console.error('Error loading user details:', error);
       }
     });
   }
 
   updateUsername(): void {
-    this.clearMessages('username'); // Clear previous messages
     if (this.usernameForm.valid && this.user) {
       const updateUserDto: UpdateUserDto = {
         username: this.usernameForm.value.username,
-        role: this.user.role
+        role: this.user.role // Role should remain unchanged
       };
       this.userSelfService.updateUsername(updateUserDto).subscribe({
         next: (updatedUser: UserDto) => {
-          this.user = updatedUser;
-          this.showUsernameMessage('Username updated successfully!');
+          this.user = updatedUser; // Update user object with new data
+          localStorage.setItem('username', updatedUser.username); // Update username in local storage
+          this.showMessage('Username updated successfully!\nYou will need to log in again.');
+          setTimeout(() => {
+            this.authService.logout(); // Log out the user after username change
+          }, 3000); // Wait for 3 seconds before logging out
         },
         error: (error: HttpErrorResponse) => {
-          this.showUsernameError('Failed to update username: ' + error.error); // Assuming error.error has the message from Spring
+          this.showError('Failed to update username, httpError:' + error.status);
           console.error('Error updating username:', error);
         }
       });
+
     } else {
-      this.showUsernameError('Please enter a valid username.');
+      this.showError('Please enter a valid username.');
     }
   }
 
   updatePassword(): void {
-    this.clearMessages('password'); // Clear previous messages
     if (this.passwordForm.valid) {
       const updatePasswordDto: UpdateUserPasswordDto = {
         password: this.passwordForm.value.password
       };
       this.userSelfService.updatePassword(updatePasswordDto).subscribe({
         next: (updatedUser: UserDto) => {
-          this.user = updatedUser;
-          this.showPasswordMessage('Password updated successfully!');
           this.passwordForm.reset(); // Clear password field after successful update
+          this.showMessage('Password updated successfully!\nYou will need to log in again.');
+          setTimeout(() => {
+            this.authService.logout(); // Log out the user after username change
+          }, 3000); // Wait for 3 seconds before logging out
         },
         error: (error: HttpErrorResponse) => {
-          this.showPasswordError('Failed to update password: ' + error.error); // Assuming error.error has the message from Spring
+          this.showError('Failed to update password, httpError:' + error.status);
           console.error('Error updating password:', error);
         }
       });
     } else {
-      this.showPasswordError('Please enter a valid password (min 6, max 25 characters).');
+      this.showError('Please enter a valid password (min 6, max 25 characters).');
     }
   }
 
-  private showGlobalMessage(msg: string): void {
-    this.globalMessage = msg;
-    this.isGlobalError = false;
-    setTimeout(() => this.globalMessage = '', 3000);
+  private showMessage(msg: string): void {
+    this.message = msg;
+    this.isError = false;
+    setTimeout(() => this.message = '', 3000); // Clear message after 3 seconds
   }
 
-  private showGlobalError(msg: string): void {
-    this.globalMessage = msg;
-    this.isGlobalError = true;
-    setTimeout(() => this.globalMessage = '', 5000);
-  }
-
-  private showUsernameMessage(msg: string): void {
-    this.usernameMessage = msg;
-    this.isUsernameError = false;
-    setTimeout(() => this.usernameMessage = '', 3000);
-  }
-
-  private showUsernameError(msg: string): void {
-    this.usernameMessage = msg;
-    this.isUsernameError = true;
-    setTimeout(() => this.usernameMessage = '', 5000);
-  }
-
-  private showPasswordMessage(msg: string): void {
-    this.passwordMessage = msg;
-    this.isPasswordError = false;
-    setTimeout(() => this.passwordMessage = '', 3000);
-  }
-
-  private showPasswordError(msg: string): void {
-    this.passwordMessage = msg;
-    this.isPasswordError = true;
-    setTimeout(() => this.passwordMessage = '', 5000);
-  }
-
-  private clearMessages(formType?: 'username' | 'password'): void {
-    if (formType === 'username') {
-      this.usernameMessage = '';
-      this.isUsernameError = false;
-    } else if (formType === 'password') {
-      this.passwordMessage = '';
-      this.isPasswordError = false;
-    } else {
-      // Clear all messages if no specific formType is provided
-      this.globalMessage = '';
-      this.isGlobalError = false;
-      this.usernameMessage = '';
-      this.isUsernameError = false;
-      this.passwordMessage = '';
-      this.isPasswordError = false;
-    }
+  private showError(msg: string): void {
+    this.message = msg;
+    this.isError = true;
+    setTimeout(() => this.message = '', 5000); // Clear error message after 5 seconds
   }
 }

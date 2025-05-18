@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Student Details</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Loading student details...</div>
+  <div *ngIf="error" class="alert alert-danger">Error: {{ error }}</div>
+
+  <div *ngIf="!loading && !error && student">
+    <form [formGroup]="studentForm" (ngSubmit)="updateStudent()">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" id="name" formControlName="name" class="form-control" />
+         <div *ngIf="studentForm.get('name')?.invalid && studentForm.get('name')?.touched" class="text-danger">
+            Name is required.
+          </div>
+      </div>
+      <div class="mb-3">
+        <label for="neptuncode" class="form-label">Neptun Code:</label>
+        <input type="text" id="neptuncode" formControlName="neptuncode" class="form-control" />
+         <div *ngIf="studentForm.get('neptuncode')?.invalid && studentForm.get('neptuncode')?.touched" class="text-danger">
+            <div *ngIf="studentForm.get('neptuncode')?.errors?.['required']">Neptun Code is required.</div>
+            <div *ngIf="studentForm.get('neptuncode')?.errors?.['pattern']">Neptun Code must be 6 characters.</div>
+          </div>
+      </div>
+      <div class="mb-3">
+        <label for="specialization" class="form-label">Specialization:</label>
+        <input type="text" id="specialization" formControlName="specialization" class="form-control" />
+         <div *ngIf="studentForm.get('specialization')?.invalid && studentForm.get('specialization')?.touched" class="text-danger">
+            Specialization is required.
+          </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Update Student</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="goBackToList()">Back to List</button>
+    </form>
+  </div>
+</div>

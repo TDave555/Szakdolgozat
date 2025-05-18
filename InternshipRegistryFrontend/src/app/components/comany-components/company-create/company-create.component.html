@@ -1,0 +1,35 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Create Company</h2>
+
+  <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <form [formGroup]="companyForm" (ngSubmit)="createCompany()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" id="name" formControlName="name" class="form-control" />
+       <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="text-danger">
+            Name is required.
+       </div>
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Address:</label>
+      <input type="text" id="address" formControlName="address" class="form-control" />
+       <div *ngIf="companyForm.get('address')?.invalid && companyForm.get('address')?.touched" class="text-danger">
+            Address is required.
+          </div>
+    </div>
+    <div class="mb-3">
+      <label for="active" class="form-label">Active:</label>
+       <select id="active" formControlName="active" class="form-select">
+        <option [value]="true">Yes</option>
+        <option [value]="false">No</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      Create Company
+    </button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="goBackToList()">Cancel</button>
+  </form>
+</div>

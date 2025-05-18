@@ -11,7 +11,7 @@ import { UserDto } from '../models/user-dto.model';
 })
 export class UserService {
 
-  private apiUrl = `${environment.apiUrl}/users`;
+  private apiUrl = `${environment.apiUrl}/admin/users`;
 
   constructor(private http: HttpClient) { }
 
