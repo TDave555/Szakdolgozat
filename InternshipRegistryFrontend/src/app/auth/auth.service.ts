@@ -3,23 +3,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-interface LoginResponse {
-  status: string;
-  username: string;
-  roles: string;
-}
-
-enum UserRole {
-  ADMIN = 'ROLE_ADMIN',
-  COORDINATOR = 'ROLE_COORDINATOR',
-  STUDENT = 'ROLE_STUDENT',
-}
+import { UserAuthRole } from './user-auth-role.enum';
+import { LoginResponse } from './login-http-response-body';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private userRolesSubject = new BehaviorSubject<UserRole[] | null>(null);
+  private userRolesSubject = new BehaviorSubject<UserAuthRole[] | null>(null);
   private userNameSubject = new BehaviorSubject<string | null>(null);
   userRoles$ = this.userRolesSubject.asObservable();
   userName$ = this.userNameSubject.asObservable();
@@ -32,11 +22,11 @@ export class AuthService {
     const roles = localStorage.getItem('roles');
     const username = localStorage.getItem('username');
     if (roles && username) {
-      const parsedRoles: UserRole[] = JSON.parse(roles);
+      const parsedRoles: UserAuthRole[] = JSON.parse(roles);
       this.userRolesSubject.next(parsedRoles);
       this.userNameSubject.next(username);
     } else {
-      this.isAuthenticated().subscribe(isAuth => {
+      this.isAuthenticated().subscribe((isAuth: boolean) => {
         if (isAuth) {
           this.logout();
         }
@@ -52,14 +42,14 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-     return !!this.userRolesSubject.getValue()?.includes(UserRole.ADMIN);
+     return !!this.userRolesSubject.getValue()?.includes(UserAuthRole.ADMIN);
   }
 
   isCoordinator(): boolean {
-    return !!this.userRolesSubject.getValue()?.includes(UserRole.COORDINATOR);
+    return !!this.userRolesSubject.getValue()?.includes(UserAuthRole.COORDINATOR);
   }
   isStudent(): boolean {
-    return !!this.userRolesSubject.getValue()?.includes(UserRole.STUDENT);
+    return !!this.userRolesSubject.getValue()?.includes(UserAuthRole.STUDENT);
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
@@ -76,14 +66,14 @@ export class AuthService {
       }
     ).pipe(
       tap(response => {
-        const rolesFromResponse: UserRole[] = response.roles.split(",")
-        .map(role => {
-          const mappedRole = Object.values(UserRole).find(userRole => userRole === role.trim());
+        const rolesFromResponse: UserAuthRole[] = response.roles.split(",")
+        .map((role: string) => {
+          const mappedRole = Object.values(UserAuthRole).find((userRole: string) => userRole === role.trim());
           if (mappedRole === undefined) {
             console.warn(`Unknown role encountered: ${role}`);
           }
           return mappedRole;
-        }).filter(role => role !== undefined);
+        }).filter((role: UserAuthRole | undefined) => role !== undefined);
         //developement console.log
         console.log('Login status:', response.status);
         console.log('Username: ', response.username, ', roles:', rolesFromResponse);
@@ -106,7 +96,7 @@ export class AuthService {
         this.userNameSubject.next(null);
         this.router.navigate(['/login']);
       },
-      error: err => {
+      error: (err: any) => {
         console.error("Logout failed", err);
       }
     });

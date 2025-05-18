@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
     errorMessage: string = '';

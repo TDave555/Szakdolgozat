@@ -1,6 +1,6 @@
-import { User } from "./user.model";
+import { UserDto } from "./user-dto.model";
 
-export interface Student extends User {
+export interface StudentDto extends UserDto {
   name: string;
   neptuncode: string;
   specialization: string;

@@ -1,0 +1,81 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h2 class="mb-4 text-center">User Profile</h2>
+
+      <div *ngIf="globalMessage" class="alert mb-3" [ngClass]="{'alert-success': !isGlobalError, 'alert-danger': isGlobalError}" role="alert">
+        {{ globalMessage }}
+      </div>
+
+      <div *ngIf="user" class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">User Information</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>ID:</strong> {{ user.id }}</li>
+            <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+            <li class="list-group-item"><strong>Role:</strong> <span class="badge bg-info text-dark">{{ user.role }}</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div *ngIf="isStudent && student" class="card mb-4">
+        <div class="card-header bg-success text-white">
+          <h3 class="card-title mb-0">Student Information</h3>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Name:</strong> {{ student.name }}</li>
+            <li class="list-group-item"><strong>Neptun Code:</strong> {{ student.neptuncode }}</li>
+            <li class="list-group-item"><strong>Specialization:</strong> {{ student.specialization }}</li>
+            <li class="list-group-item" *ngIf="student.internshipId"><strong>Internship ID:</strong> {{ student.internshipId }}</li>
+            <li class="list-group-item" *ngIf="!student.internshipId"><strong>Internship ID:</strong> Not assigned</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h3 class="card-title mb-0">Update Profile</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="usernameForm" (ngSubmit)="updateUsername()" class="mb-4">
+            <h4 class="mb-3">Change Username</h4>
+            <div class="mb-3">
+              <label for="username" class="form-label">New Username:</label>
+              <input id="username" type="text" formControlName="username" class="form-control" placeholder="Enter new username" />
+              <div *ngIf="usernameForm.get('username')?.invalid && usernameForm.get('username')?.touched" class="text-danger mt-1">
+                <div *ngIf="usernameForm.get('username')?.errors?.['required']">Username is required.</div>
+                <div *ngIf="usernameForm.get('username')?.errors?.['maxlength']">Username cannot be more than 25 characters.</div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="usernameForm.invalid">Update Username</button>
+            <div *ngIf="usernameMessage" class="alert mt-3" [ngClass]="{'alert-success': !isUsernameError, 'alert-danger': isUsernameError}" role="alert">
+              {{ usernameMessage }}
+            </div>
+          </form>
+
+          <hr class="my-4">
+
+          <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+            <h4 class="mb-3">Change Password</h4>
+            <div class="mb-3">
+              <label for="password" class="form-label">New Password:</label>
+              <input id="password" type="password" formControlName="password" class="form-control" placeholder="Enter new password" />
+              <div *ngIf="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched" class="text-danger mt-1">
+                <div *ngIf="passwordForm.get('password')?.errors?.['required']">Password is required.</div>
+                <div *ngIf="passwordForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
+                <div *ngIf="passwordForm.get('password')?.errors?.['maxlength']">Password cannot be more than 25 characters.</div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>
+            <div *ngIf="passwordMessage" class="alert mt-3" [ngClass]="{'alert-success': !isPasswordError, 'alert-danger': isPasswordError}" role="alert">
+              {{ passwordMessage }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
