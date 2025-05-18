@@ -49,29 +49,22 @@ public class UserService {
                 new AppException("User not found", HttpStatus.NOT_FOUND));
         if(userRepository.existsByUsername(userDto.getUsername()))
             throw new AppException("Username already exists", HttpStatus.BAD_REQUEST);
-        int rows = userRepository.updateUsername(patchUser.getId(), userDto.getUsername());
-        if(rows != 1)
-            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
         patchUser.setUsername(userDto.getUsername());
-        return userMapper.toDto(patchUser);
+        return userMapper.toDto(userRepository.save(patchUser));
     }
 
     public UserDto updatePassword(String username, UpdateUserPasswordDto passwordDto) {
         User patchUser = userRepository.findByUsername(username).orElseThrow(() ->
                 new AppException("User not found", HttpStatus.NOT_FOUND));
-        int rows = userRepository.updatePassword(patchUser.getId(), passwordEncoder.encode(passwordDto.getPassword()));
-        if(rows != 1)
-            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
-        return userMapper.toDto(patchUser);
+        patchUser.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+        return userMapper.toDto(userRepository.save(patchUser));
     }
 
     public UserDto updateRole(String username, UpdateUserDto userDto) {
         User patchUser = userRepository.findByUsername(username).orElseThrow(() ->
                 new AppException("User not found", HttpStatus.NOT_FOUND));
-        int rows = userRepository.updateRole(patchUser.getId(), userDto.getRole());
-        if(rows != 1)
-            throw new AppException("Username update failed", HttpStatus.INTERNAL_SERVER_ERROR);
-        return userMapper.toDto(patchUser);
+        patchUser.setRole(userDto.getRole());
+        return userMapper.toDto(userRepository.save(patchUser));
     }
 
     public void deleteUser(String username) {
