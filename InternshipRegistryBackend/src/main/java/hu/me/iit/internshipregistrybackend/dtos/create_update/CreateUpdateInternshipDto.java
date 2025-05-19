@@ -24,7 +24,7 @@ public class CreateUpdateInternshipDto {
 
     private String companyInstructor;
 
-    @Min(1)
+
     @Max(5)
     private int grade;
 
