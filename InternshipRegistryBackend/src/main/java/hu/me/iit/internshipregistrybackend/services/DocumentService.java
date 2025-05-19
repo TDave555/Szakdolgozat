@@ -77,9 +77,9 @@ public class DocumentService {
             String filename = Path.of(file.getOriginalFilename()).getFileName().toString();
             //ensuring unique filename
             title = filename.substring(0, filename.lastIndexOf('.'));
-            fileExtension = filename.substring(filename.lastIndexOf('.'));
+            fileExtension = filename.substring(filename.lastIndexOf('.') + 1);
             filename = title + LocalDateTime.now().format(DateTimeFormatter
-                    .ofPattern("yyyy-MM-dd_HH-mm-ss")) +
+                    .ofPattern("yyyy-MM-dd_HH-mm-ss")) + "." +
                     fileExtension;
 
             Path destFilepath = targetDirectory.resolve(filename);
@@ -93,8 +93,8 @@ public class DocumentService {
             throw new AppException("File type not allowed", HttpStatus.BAD_REQUEST);
 
         Document createDocument = Document.builder()
-                .title(title+fileExtension)
-                .fileExtension(fileExtension.replace(".", ""))
+                .title(title)
+                .fileExtension(fileExtension)
                 .filepath(filepath)
                 .internship(internship)
                 .build();
@@ -115,7 +115,7 @@ public class DocumentService {
             return resource;
         else
             throw new AppException("Could not read file: "
-                    + document.getTitle() + document.getFileExtension(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    + document.getTitle() + "." + document.getFileExtension(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public Resource sendFileToStudent(Long id, String username) {
