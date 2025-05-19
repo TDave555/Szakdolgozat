@@ -91,7 +91,6 @@ public class DocumentService {
         }
 
         if (!allowedFileTypes.contains(filetype)) {
-            System.out.println(filetype);
             throw new AppException("File type not allowed", HttpStatus.BAD_REQUEST);
         }
 
