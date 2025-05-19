@@ -21,7 +21,7 @@ export class DocumentService {
     return this.http.get<DocumentDto>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
 
-  createDocument(file: File, internshipId: number): Observable<DocumentDto> {
+  uploadDocument(file: File, internshipId: number): Observable<DocumentDto> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('internshipId', internshipId.toString());

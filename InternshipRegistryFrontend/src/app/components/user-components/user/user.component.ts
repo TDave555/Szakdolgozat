@@ -155,7 +155,7 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   goBackToList(): void {
-    this.router.navigate(['/users']);
+    this.router.navigate(['/users/list']);
   }
 
   private showMessage(msg: string): void {

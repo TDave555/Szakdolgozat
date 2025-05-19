@@ -33,7 +33,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
     this.error = null;
     this.studentService.getAllStudents().pipe(takeUntil(this.destroy$)).subscribe({
       next: (students: StudentDto[]) => {
-        this.students = students;
+        this.students = students.sort((a, b) => b.id - a.id);
         this.loading = false;
       },
       error: (err) => {
@@ -43,8 +43,8 @@ export class StudentListComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToDetails(neptuncode: string): void {
-    this.router.navigate(['/students', neptuncode]);
+  editStudent(neptuncode: string): void {
+    this.router.navigate(['/students/details', neptuncode]);
   }
 
   goToCreate(): void {

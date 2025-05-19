@@ -27,8 +27,6 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   ) {
     this.studentForm = this.fb.group({
       name: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
       neptuncode: ['', [Validators.required, Validators.pattern(/^[A-Z0-9]{6}$/)]], // Example pattern
       specialization: ['', Validators.required]
     });
@@ -44,12 +42,32 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     if (this.studentForm.valid) {
       this.loading = true;
       this.error = null;
-      const newStudent: CreateStudentDto = this.studentForm.value;
+
+      const formData = this.studentForm.value;
+
+      const neptuncode = formData.neptuncode as string;
+      const name = formData.name as string;
+      const specialization = formData.specialization as string;
+
+      const username = neptuncode.toUpperCase();
+
+      const firstName = name.split(' ')[0];
+      const password = firstName + neptuncode.toUpperCase();
+
+      const newStudent: CreateStudentDto = {
+        name: formData.name,
+        neptuncode: formData.neptuncode.toUpperCase(),
+        specialization: formData.specialization,
+        username: username,
+        password: password
+      };
+
       this.studentService.createStudent(newStudent).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
           this.message = 'Student created successfully!';
           this.loading = false;
-          this.router.navigate(['/students']); // Redirect to student list
+          this.studentForm.reset();
+
         },
         error: (err: HttpErrorResponse) => {
           this.error = err.message || 'Failed to create student.';
@@ -62,6 +80,6 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   }
 
   goBackToList(): void {
-    this.router.navigate(['/students']);
+    this.router.navigate(['/students/list']);
   }
 }

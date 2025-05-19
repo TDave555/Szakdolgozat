@@ -1,1 +1,26 @@
-<p>internship-select works!</p>
+<div class="container mt-5">
+  <h2>Select Internship Options</h2>
+
+  <div class="mb-3">
+    <label for="year" class="form-label">Year:</label>
+    <select id="year" [(ngModel)]="selectedYear" class="form-select">
+      <option [value]="-1">All Years</option>
+      <option *ngFor="let year of years" [value]="year">
+        {{ year }}
+      </option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="completed" class="form-label">Completed:</label>
+    <select id="completed" [(ngModel)]="selectedCompleted" class="form-select">
+      <option *ngFor="let option of completedOptions" [value]="option">
+        {{ option === 'all' ? 'All' : option === 'true' ? 'Yes' : 'No' }}
+      </option>
+    </select>
+  </div>
+
+  <button (click)="searchInternships()" class="btn btn-primary">
+    Search Internships
+  </button>
+</div>

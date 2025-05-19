@@ -44,7 +44,7 @@ export class UserCreateComponent implements OnInit {
       this.userService.createUser(newUser).subscribe({
         next: (createdUser: UserDto) => {
           this.showMessage(`User '${createdUser.username}' created successfully with ID: ${createdUser.id}`);
-          this.userForm.reset({ role: Role.STUDENT }); // Reset form, keep default role
+          this.userForm.reset();
         },
         error: (error: HttpErrorResponse) => {
           this.showError('Failed to create user: ' + error.status + ' - ' + (error.error?.message || 'Unknown error'));
@@ -55,6 +55,10 @@ export class UserCreateComponent implements OnInit {
       this.showError('Please fill in all required fields correctly.');
       this.userForm.markAllAsTouched(); // Mark all fields as touched to show validation errors
     }
+  }
+
+  goBackToList(): void {
+    this.router.navigate(['/users/list']);
   }
 
   private showMessage(msg: string): void {

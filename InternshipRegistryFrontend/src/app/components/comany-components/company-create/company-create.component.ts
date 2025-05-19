@@ -48,7 +48,7 @@ export class CompanyCreateComponent implements OnInit, OnDestroy {
         next: () => {
           this.message = 'Company created successfully!';
           this.loading = false;
-          this.router.navigate(['/companies']); // Redirect to company list
+          this.companyForm.reset();
         },
         error: (err: HttpErrorResponse) => {
           this.error = err.message || 'Failed to create company.';

@@ -75,7 +75,6 @@ export class StudentComponent implements OnInit, OnDestroy {
       const updatedStudent: UpdateStudentDto = this.studentForm.value;
       this.studentService.updateStudent(this.student.id, updatedStudent).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
-          this.router.navigate(['/students']); // Go back to student list
         },
         error: (err: HttpErrorResponse) => {
           this.error = err.message || 'Failed to update student.';
@@ -87,6 +86,6 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   goBackToList(): void {
-    this.router.navigate(['/students']);
+    this.router.navigate(['/students/list']);
   }
 }

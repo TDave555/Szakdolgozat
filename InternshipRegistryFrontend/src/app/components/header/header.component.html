@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
   <div class="container-fluid">
       <a class="navbar-brand text-center" routerLink="profile">Welcome <br> <strong>{{ currentUser }}</strong></a>
-    <div class="collapse navbar-collapse">
+    <div class="collapse-horizontal navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" *ngIf="authService.isStudent()">
           <a class="nav-link" routerLink="/my-internship">My Internship</a>
@@ -11,18 +11,17 @@
           <a class="nav-link" routerLink="/users/create">Create user</a>
         </li>
         <li class="nav-item" *ngIf="authService.isCoordinator()">
-          <a class="nav-link" routerLink="/students/list">List users</a>
-          <a class="nav-link" routerLink="/studnets/create">Create student</a>
+          <a class="nav-link" routerLink="/students/list">List students</a>
+          <a class="nav-link" routerLink="/students/create">Create student</a>
         </li>
-        <li class="nav-item" *ngIf="authService.isAdmin()">
-          <a class="nav-link" routerLink="/internsips/select">List users</a>
-          <a class="nav-link" routerLink="/internships/list">List internships</a>
-          <a class="nav-link" routerLink="/internships/create">Create internship</a>
-        </li>
-        <li class="nav-item" *ngIf="authService.isAdmin()">
+        <li class="nav-item" *ngIf="authService.isCoordinator()">
           <a class="nav-link" routerLink="/companies/list">List companies</a>
           <a class="nav-link" routerLink="/companies/create">Create company</a>
-
+        </li>
+        <li class="nav-item" *ngIf="authService.isCoordinator()">
+          <a class="nav-link" routerLink="/internships/selection">Filter internships</a>
+          <a class="nav-link" routerLink="/internships/list">List all internships</a>
+          <a class="nav-link" routerLink="/internships/create">Create internship</a>
         </li>
       </ul>
       <button class="btn btn-outline-danger" (click)="authService.logout()">

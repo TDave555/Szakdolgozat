@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DocumentDto } from '../models/document-dto.model';
-import { InternshipDto } from '../models/internship.model';
+import { InternshipDto } from '../models/internship-dto.model';
 import { CreateUpdateInternshipDto } from '../models/internship-create-update-dto.model';
 import { StudentDto } from '../models/student-dto.model';
 import { HttpClient } from '@angular/common/http';

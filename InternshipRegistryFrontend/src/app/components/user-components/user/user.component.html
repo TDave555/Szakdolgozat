@@ -29,7 +29,7 @@
                 <div *ngIf="usernameForm.get('username')?.errors?.['maxlength']">Username cannot be more than 25 characters.</div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="usernameForm.invalid">Update Username</button>
+            <button type="submit" class="btn btn-success" [disabled]="usernameForm.invalid">Update Username</button>
           </form>
 
           <hr class="my-4">
@@ -45,7 +45,7 @@
                 <div *ngIf="passwordForm.get('password')?.errors?.['maxlength']">Password cannot be more than 25 characters.</div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>
+            <button type="submit" class="btn btn-success" [disabled]="passwordForm.invalid">Update Password</button>
           </form>
 
           <hr class="my-4">
@@ -61,7 +61,7 @@
                 <div *ngIf="roleForm.get('role')?.errors?.['required']">Role is required.</div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="roleForm.invalid">Update Role</button>
+            <button type="submit" class="btn btn-success" [disabled]="roleForm.invalid">Update Role</button>
           </form>
 
           <hr class="my-4">

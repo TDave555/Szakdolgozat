@@ -1,1 +1,47 @@
-<p>internship-list works!</p>
+<div class="container mt-5">
+  <h2>Internships</h2>
+
+  <div *ngIf="loading" class="alert alert-info">Loading internships...</div>
+  <div *ngIf="error" class="alert alert-danger">Error: {{ error }}</div>
+
+  <div *ngIf="!loading && !error && internships.length > 0">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Student</th>
+          <th>Company</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Weeks</th>
+          <th>Instructor</th>
+          <th>Grade</th>
+          <th>Certificate Date</th>
+          <th>Completed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let internship of internships">
+          <td>{{ internship.id }}</td>
+          <td>{{ internship.student.name }} ({{internship.student.neptuncode}})</td>
+          <td>{{ internship.company.name }}</td>
+          <td>{{ internship.startDate | date }}</td>
+          <td>{{ internship.endDate | date }}</td>
+          <td>{{ internship.weeks }}</td>
+          <td>{{ internship.companyInstructor }}</td>
+          <td>{{ internship.grade == 0 ? "" : internship.grade }}</td>
+          <td>{{ internship.certificateDate | date }}</td>
+          <td>{{ internship.completed ? 'Yes' : 'No' }}</td>
+          <td>
+            <button (click)="goToDetails(internship.id)" class="btn btn-sm btn-warning me-2">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!loading && !error && internships.length === 0" class="alert alert-warning">
+    No internships found.
+  </div>
+</div>

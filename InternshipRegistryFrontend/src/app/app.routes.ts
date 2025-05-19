@@ -14,6 +14,13 @@ import { StudentComponent } from './components/student-components/student/studen
 import { CompanyCreateComponent } from './components/comany-components/company-create/company-create.component';
 import { CompanyListComponent } from './components/comany-components/company-list/company-list.component';
 import { CompanyComponent } from './components/comany-components/company/company.component';
+import { InternshipCreateComponent } from './components/internship-components/internship-create/internship-create.component';
+import { InternshipComponent } from './components/internship-components/internship/internship.component';
+import { InternshipSelectComponent } from './components/internship-components/internship-select/internship-select.component';
+import { InternshipListComponent } from './components/internship-components/internship-list/internship-list.component';
+import { StudentInternshipCreateComponent } from './components/internship-components/student-internship-create/student-internship-create.component';
+import { StudentInternshipDetailsComponent } from './components/internship-components/student-internship-details/student-internship-details.component';
+import { StudentGuard } from './auth/student-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -31,7 +38,16 @@ export const routes: Routes = [
 
   {path: 'companies/create', component: CompanyCreateComponent, canActivate: [CoordinatorGuard] },
   {path: 'companies/list', component: CompanyListComponent, canActivate: [CoordinatorGuard] },
-  {path: 'companies/details:id', component: CompanyComponent, canActivate: [CoordinatorGuard] },
+  {path: 'companies/details/:id', component: CompanyComponent, canActivate: [CoordinatorGuard] },
 
+  {path: 'internships/create', component: InternshipCreateComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/details/:id', component: InternshipComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/selection', component: InternshipSelectComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/list', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/list/:year', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/list/:completed', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
+  {path: 'internships/list/:year/:completed', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
 
+  {path: 'my-internship', component: StudentInternshipDetailsComponent, canActivate: [StudentGuard] },
+  {path: 'my-internship/create', component: StudentInternshipCreateComponent, canActivate: [StudentGuard] }
 ];

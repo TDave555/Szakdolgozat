@@ -1,1 +1,122 @@
-<p>internship-create works!</p>
+<div class="container mt-5">
+  <h2>Create Internship</h2>
+
+  <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <form [formGroup]="internshipForm" (ngSubmit)="createInternship()">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="studentId" class="form-label">Student:</label>
+        <select id="studentId" formControlName="studentId" class="form-select">
+          <option *ngFor="let student of students" [value]="student.id">
+            {{ student.name }} ({{student.neptuncode}})
+          </option>
+        </select>
+        <div
+          *ngIf="
+            internshipForm.get('studentId')?.invalid &&
+            internshipForm.get('studentId')?.touched
+          "
+          class="text-danger"
+        >
+          Student is required.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="companyId" class="form-label">Company:</label>
+        <select id="companyId" formControlName="companyId" class="form-select">
+          <option *ngFor="let company of companies" [value]="company.id">
+            {{ company.name }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            internshipForm.get('companyId')?.invalid &&
+            internshipForm.get('companyId')?.touched
+          "
+          class="text-danger"
+        >
+          Company is required.
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="startDate" class="form-label">Start Date:</label>
+         <input type="date" id="startDate" formControlName="startDate" class="form-control"  />
+        <div
+          *ngIf="
+            internshipForm.get('startDate')?.invalid &&
+            internshipForm.get('startDate')?.touched
+          "
+          class="text-danger"
+        >
+          Start date is required.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="endDate" class="form-label">End Date:</label>
+         <input type="date" id="endDate" formControlName="endDate" class="form-control"  />
+        </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="weeks" class="form-label">Weeks:</label>
+        <select id="weeks" formControlName="weeks" class="form-select">
+          <option>6</option>
+          <option>8</option>
+        </select>
+        <div
+          *ngIf="
+            internshipForm.get('weeks')?.invalid &&
+            internshipForm.get('weeks')?.touched
+          "
+          class="text-danger"
+        >
+          Number of weeks is required.
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="companyInstructor" class="form-label">Company Instructor:</label>
+        <input
+          type="text"
+          id="companyInstructor"
+          formControlName="companyInstructor"
+          class="form-control"
+        />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="grade" class="form-label">Grade:</label>
+        <input
+          type="number"
+          id="grade"
+          formControlName="grade"
+          class="form-control"
+          min="1"
+          max="5"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="certificateDate" class="form-label">Certificate Date:</label>
+         <input type="date" id="certificateDate" formControlName="certificateDate" class="form-control"  />
+        </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="completed" class="form-label">Completed:</label>
+        <select id="completed" formControlName="completed" class="form-select">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      Create Internship
+    </button>
+  </form>
+</div>

@@ -33,7 +33,7 @@ export class CompanyListComponent implements OnInit, OnDestroy {
     this.error = null;
     this.companyService.getAllCompanies().pipe(takeUntil(this.destroy$)).subscribe({
       next: (companies: CompanyDto[]) => {
-        this.companies = companies;
+        this.companies = companies.sort((a, b) => b.id - a.id);
         this.loading = false;
       },
       error: (err) => {
@@ -43,8 +43,8 @@ export class CompanyListComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToDetails(id: number): void {
-    this.router.navigate(['/companies', id]);
+  editCompany(id: number): void {
+    this.router.navigate(['/companies/details', id]);
   }
 
   goToCreate(): void {

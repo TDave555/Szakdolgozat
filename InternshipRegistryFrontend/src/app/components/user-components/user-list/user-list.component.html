@@ -8,11 +8,12 @@
 
       <div class="card mb-4">
         <div class="card-header bg-primary text-white">
+          <h2 class="card-title mb-0">Admin Dashboard</h2>
           <h3 class="card-title mb-0">User List</h3>
         </div>
         <div class="card-body">
-          <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-success" (click)="createNewUser()">Create New User</button>
+          <div class="d-flex mb-3">
+            <button class="btn btn-success" (click)="goToCreate()">Create New User</button>
           </div>
           <div *ngIf="users.length > 0; else noUsers">
             <div class="table-responsive">
@@ -35,9 +36,7 @@
                       'bg-info text-dark': user.role === Role.STUDENT
                     }">{{ user.role }}</span></td>
                     <td>
-                      <button class="btn btn-sm btn-info me-2" (click)="viewUser(user.username)">View</button>
                       <button class="btn btn-sm btn-warning me-2" (click)="editUser(user.username)">Edit</button>
-                      <button class="btn btn-sm btn-danger" (click)="deleteUser(user.username)">Delete</button>
                     </td>
                   </tr>
                 </tbody>

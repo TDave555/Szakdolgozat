@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { InternshipDto } from '../models/internship.model';
+import { InternshipDto } from '../models/internship-dto.model';
 import { InternshipDateConversionModel } from '../models/internship-date-conversion.model';
 import { CreateUpdateInternshipDateConversionModel } from '../models/internship-create-update-date-conversion.model';
 import { CreateUpdateInternshipDto } from '../models/internship-create-update-dto.model';
@@ -26,12 +26,12 @@ export class DateConversionService {
 
   public CreateUpdateInternshipToConversionModel(dto : CreateUpdateInternshipDto) : CreateUpdateInternshipDateConversionModel {
     return {
-      startDate: dto.startDate.toISOString().slice(0, 10),
-      endDate: dto.endDate ? dto.endDate.toISOString().slice(0, 10) : null,
+      startDate: new Date(dto.startDate).toISOString().split('T')[0],
+      endDate: dto.endDate ? new Date(dto.endDate).toISOString().split('T')[0] : null,
       weeks: dto.weeks,
       companyInstructor: dto.companyInstructor,
       grade: dto.grade,
-      certificateDate: dto.certificateDate ? dto.certificateDate.toISOString().slice(0, 10) : null,
+      certificateDate: dto.certificateDate ? new Date(dto.certificateDate).toISOString().split('T')[0] : null,
       completed: dto.completed,
       studentId: dto.studentId,
       companyId: dto.companyId

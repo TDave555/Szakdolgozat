@@ -12,21 +12,7 @@
             Name is required.
        </div>
     </div>
-    <div class="mb-3">
-      <label for="username" class="form-label">Username:</label>
-      <input type="text" id="username" formControlName="username" class="form-control" />
-       <div *ngIf="studentForm.get('username')?.invalid && studentForm.get('username')?.touched" class="text-danger">
-            Username is required.
-       </div>
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password:</label>
-      <input type="password" id="password" formControlName="password" class="form-control" />
-       <div *ngIf="studentForm.get('password')?.invalid && studentForm.get('password')?.touched" class="text-danger">
-          <div *ngIf="studentForm.get('password')?.errors?.['required']">Password is required.</div>
-          <div *ngIf="studentForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
-        </div>
-    </div>
+
     <div class="mb-3">
       <label for="neptuncode" class="form-label">Neptun Code:</label>
       <input type="text" id="neptuncode" formControlName="neptuncode" class="form-control" />

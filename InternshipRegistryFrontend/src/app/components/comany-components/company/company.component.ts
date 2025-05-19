@@ -20,6 +20,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
   companyForm: FormGroup;
   loading = true;
   error: string | null = null;
+  massage: string = '';
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -75,8 +76,8 @@ export class CompanyComponent implements OnInit, OnDestroy {
       const updatedCompany: CreateUpdateCompanyDto = this.companyForm.value;
       this.companyService.updateCompany(this.companyId, updatedCompany).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
-          this.router.navigate(['/companies']); // Go back to company list
-        },
+          this.massage = 'Company updated successfully.';
+         },
         error: (err: HttpErrorResponse) => {
           this.error = err.message || 'Failed to update company.';
         }
@@ -87,6 +88,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
   }
 
   goBackToList(): void {
-    this.router.navigate(['/companies']);
+    this.router.navigate(['/companies/list']);
   }
 }

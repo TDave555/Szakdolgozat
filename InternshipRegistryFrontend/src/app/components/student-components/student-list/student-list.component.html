@@ -10,6 +10,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Name</th>
           <th>Neptun Code</th>
           <th>Specialization</th>
@@ -18,11 +19,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let student of students">
+          <td>{{ student.id }}</td>
           <td>{{ student.name }}</td>
           <td>{{ student.neptuncode }}</td>
           <td>{{ student.specialization }}</td>
           <td>
-            <button (click)="goToDetails(student.neptuncode)" class="btn btn-sm btn-primary">Details</button>
+            <button (click)="editStudent(student.neptuncode)" class="btn btn-sm btn-warning me-2">Edit</button>
           </td>
         </tr>
       </tbody>

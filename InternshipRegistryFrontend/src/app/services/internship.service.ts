@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { InternshipDto } from '../models/internship.model';
+import { InternshipDto } from '../models/internship-dto.model';
 import { InternshipDateConversionModel } from '../models/internship-date-conversion.model';
 import { CreateUpdateInternshipDto } from '../models/internship-create-update-dto.model';
 import { DateConversionService } from './date-conversion.service';

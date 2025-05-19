@@ -41,8 +41,8 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Create User</button>
-            <button type="button" class="btn btn-secondary ms-2" (click)="router.navigate(['/users'])">Cancel</button>
+            <button type="submit" class="btn btn-success" [disabled]="userForm.invalid">Create User</button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="goBackToList()">Cancel</button>
           </form>
         </div>
       </div>

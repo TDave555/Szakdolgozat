@@ -10,6 +10,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th>ID</th>
           <th>Name</th>
           <th>Address</th>
           <th>Active</th>
@@ -18,11 +19,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let company of companies">
+          <td>{{ company.id }}</td>
           <td>{{ company.name }}</td>
           <td>{{ company.address }}</td>
           <td>{{ company.active ? 'Yes' : 'No' }}</td>
           <td>
-            <button (click)="goToDetails(company.id)" class="btn btn-sm btn-primary">Details</button>
+            <button (click)="editCompany(company.id)" class="btn btn-sm btn-warning me-2">Edit</button>
           </td>
         </tr>
       </tbody>
