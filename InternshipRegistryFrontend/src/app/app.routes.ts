@@ -43,9 +43,6 @@ export const routes: Routes = [
   {path: 'internships/create', component: InternshipCreateComponent, canActivate: [CoordinatorGuard] },
   {path: 'internships/details/:id', component: InternshipComponent, canActivate: [CoordinatorGuard] },
   {path: 'internships/selection', component: InternshipSelectComponent, canActivate: [CoordinatorGuard] },
-  {path: 'internships/list', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
-  {path: 'internships/list/:year', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
-  {path: 'internships/list/:completed', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
   {path: 'internships/list/:year/:completed', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
 
   {path: 'my-internship', component: StudentInternshipDetailsComponent, canActivate: [StudentGuard] },

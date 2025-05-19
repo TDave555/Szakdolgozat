@@ -30,12 +30,8 @@ export class InternshipSelectComponent implements OnInit {
     }
   }
 
+
   searchInternships(): void {
-    this.router.navigate(['/internships/list'], {
-      queryParams: {
-        year: this.selectedYear === -1 ? 'all' : this.selectedYear,
-        completed: this.selectedCompleted
-      }
-    });
+    this.router.navigate(['/internships/list/', this.selectedYear == -1 ? 'all' : this.selectedYear, this.selectedCompleted]);
   }
 }

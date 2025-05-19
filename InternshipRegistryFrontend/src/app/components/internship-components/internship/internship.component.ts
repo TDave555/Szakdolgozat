@@ -98,7 +98,6 @@ export class InternshipComponent implements OnInit, OnDestroy {
         error: (err: HttpErrorResponse) => {
           this.error = err.message || 'Failed to load internship details.';
           this.loading = false;
-          this.router.navigate(['/internships/list']);
         },
       });
   }
@@ -244,6 +243,6 @@ export class InternshipComponent implements OnInit, OnDestroy {
   }
 
   goBackToList(): void {
-    this.router.navigate(['/internships/list']);
+    this.router.navigate(['/internships/list','all', 'all']);
   }
 }

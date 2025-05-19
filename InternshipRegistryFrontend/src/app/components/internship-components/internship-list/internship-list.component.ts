@@ -44,7 +44,9 @@ export class InternshipListComponent implements OnInit, OnDestroy {
     const yearparam = this.route.snapshot.paramMap.get('year');
     const completedparam = this.route.snapshot.paramMap.get('completed');
 
-    if (yearparam && completedparam) {
+    console.log(yearparam, completedparam)
+
+    if (yearparam != 'all' && completedparam == 'all') {
       const year = Number(yearparam);
       this.internshipService.getAllInternshipsByYear(year).pipe(takeUntil(this.destroy$)).subscribe({
           next: (internships: InternshipDto[]) => {
@@ -56,8 +58,7 @@ export class InternshipListComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-    } else if (completedparam && !yearparam) {
-      const params = new HttpParams().set('completed', completedparam);
+    } else if (completedparam != 'all' && yearparam == 'all') {
       const completed = completedparam === 'true';
       this.internshipService.getAllInternshipsByCompletion(completed).pipe(takeUntil(this.destroy$)).subscribe({
         next: (internships: InternshipDto[]) => {
@@ -70,7 +71,7 @@ export class InternshipListComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-    } else if (yearparam && completedparam) {
+    } else if (yearparam != 'all' && completedparam != 'all') {
       const year = Number(yearparam);
       const completed = completedparam === 'true';
       this.internshipService.getAllInternshipsByYearAndCompletion(year, completed).pipe(takeUntil(this.destroy$)).subscribe({
