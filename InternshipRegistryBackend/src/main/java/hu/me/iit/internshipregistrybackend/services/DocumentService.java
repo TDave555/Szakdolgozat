@@ -32,6 +32,7 @@ public class DocumentService {
     private final InternshipRepository internshipRepository;
     private final List<String> allowedFileTypes = List.of(
             "application/pdf",
+            "application/x-tika-ooxml",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
     private final Tika tika = new Tika();
     private final Path rootDirectory = Paths.get("InternshipDocuments");
@@ -89,8 +90,10 @@ public class DocumentService {
             throw new AppException("File upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if (!allowedFileTypes.contains(filetype))
+        if (!allowedFileTypes.contains(filetype)) {
+            System.out.println(filetype);
             throw new AppException("File type not allowed", HttpStatus.BAD_REQUEST);
+        }
 
         Document createDocument = Document.builder()
                 .title(title)
