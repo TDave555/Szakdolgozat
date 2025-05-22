@@ -23,6 +23,10 @@
           <a class="nav-link" routerLink="/internships/list/all/all">List all internships</a>
           <a class="nav-link" routerLink="/internships/create">Create internship</a>
         </li>
+        <li class="nav-item" *ngIf="authService.isCoordinator()">
+          <a class="nav-link" routerLink="/excel/import">Import from Excel</a>
+          <a class="nav-link" routerLink="/excel/export">Export to Excel</a>
+        </li>
       </ul>
       <button class="btn btn-outline-danger" (click)="authService.logout()">
         Logout

@@ -89,7 +89,7 @@ export class InternshipCreateComponent implements OnInit, OnDestroy {
       this.error = null;
       const newInternship: CreateUpdateInternshipDto = this.internshipForm.value;
 
-       if (newInternship.grade !== null && newInternship.grade !== undefined) {
+      if (newInternship.grade !== null && newInternship.grade !== undefined) {
         newInternship.completed = true;
       }
       this.internshipService

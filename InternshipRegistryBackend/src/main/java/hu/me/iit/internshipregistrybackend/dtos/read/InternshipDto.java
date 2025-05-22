@@ -21,6 +21,7 @@ public class InternshipDto {
 
     private LocalDate endDate;
 
+    @NotNull
     @Min(6)
     @Max(8)
     private int weeks;

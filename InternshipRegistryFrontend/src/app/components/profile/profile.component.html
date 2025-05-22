@@ -6,8 +6,8 @@
         {{ message }}
       </div>
 
-      <div *ngIf="user" class="card mb-4">
-        <div class="card-header bg-primary text-white">
+      <div *ngIf="user" class="">
+        <div class="card-header">
           <h3 *ngIf="!isStudent" class="card-title mb-0">User Information</h3>
           <h3 *ngIf="isStudent" class="card-title mb-0">User Information</h3>
         </div>
@@ -28,6 +28,7 @@
           </div>
         </div>
       </div>
+      <br>
       <div class="card">
         <div class="card-header bg-secondary text-white">
           <h3 class="card-title mb-0">Update Profile</h3>
@@ -43,7 +44,9 @@
                 <div *ngIf="usernameForm.get('username')?.errors?.['maxlength']">Username cannot be more than 25 characters.</div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="usernameForm.invalid">Update Username</button>
+            <div>
+              <button type="submit" class="btn btn-primary me-2" [disabled]="usernameForm.invalid">Update Username</button>
+            </div>
           </form>
 
           <hr class="my-4">
@@ -59,7 +62,7 @@
                 <div *ngIf="passwordForm.get('password')?.errors?.['maxlength']">Password cannot be more than 25 characters.</div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">Update Password</button>
+            <button type="submit" class="btn btn-primary me-2" [disabled]="passwordForm.invalid">Update Password</button>
           </form>
         </div>
       </div>

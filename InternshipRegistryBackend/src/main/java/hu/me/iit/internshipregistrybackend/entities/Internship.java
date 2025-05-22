@@ -27,7 +27,7 @@ public class Internship {
   @Column(name = "end_date")
   private LocalDate endDate;
 
-  @Column
+  @Column(nullable = false)
   private int weeks;
 
   @Column(name = "company_instructor")

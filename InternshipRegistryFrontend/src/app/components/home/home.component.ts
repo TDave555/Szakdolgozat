@@ -11,5 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 export class HomeComponent {
 
-  constructor(protected authService: AuthService, private router  : Router) {}
+  constructor() {}
 }

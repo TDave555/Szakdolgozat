@@ -33,6 +33,7 @@ export class InternshipListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -43,8 +44,6 @@ export class InternshipListComponent implements OnInit, OnDestroy {
 
     const yearparam = this.route.snapshot.paramMap.get('year');
     const completedparam = this.route.snapshot.paramMap.get('completed');
-
-    console.log(yearparam, completedparam)
 
     if (yearparam != 'all' && completedparam == 'all') {
       const year = Number(yearparam);
@@ -58,12 +57,11 @@ export class InternshipListComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
-    } else if (completedparam != 'all' && yearparam == 'all') {
+    } else if (yearparam == 'all' && completedparam != 'all') {
       const completed = completedparam === 'true';
       this.internshipService.getAllInternshipsByCompletion(completed).pipe(takeUntil(this.destroy$)).subscribe({
         next: (internships: InternshipDto[]) => {
           this.internships = internships.sort((a, b) => b.id - a.id);
-
           this.loading = false;
         },
         error: (err) => {
@@ -77,7 +75,6 @@ export class InternshipListComponent implements OnInit, OnDestroy {
       this.internshipService.getAllInternshipsByYearAndCompletion(year, completed).pipe(takeUntil(this.destroy$)).subscribe({
         next: (internships: InternshipDto[]) => {
           this.internships = internships.sort((a, b) => b.id - a.id);
-
           this.loading = false;
         },
         error: (err) => {
@@ -89,7 +86,6 @@ export class InternshipListComponent implements OnInit, OnDestroy {
       this.internshipService.getAllInternships().pipe(takeUntil(this.destroy$)).subscribe({
         next: (internships: InternshipDto[]) => {
           this.internships = internships.sort((a, b) => b.id - a.id);
-
           this.loading = false;
         },
         error: (err) => {

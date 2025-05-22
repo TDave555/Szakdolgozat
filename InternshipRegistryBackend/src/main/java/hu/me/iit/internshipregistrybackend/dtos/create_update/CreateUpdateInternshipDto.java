@@ -18,12 +18,12 @@ public class CreateUpdateInternshipDto {
 
     private LocalDate endDate;
 
+    @NotNull
     @Min(6)
     @Max(8)
     private int weeks;
 
     private String companyInstructor;
-
 
     @Max(5)
     private int grade;

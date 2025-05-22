@@ -46,5 +46,6 @@ export const routes: Routes = [
   {path: 'internships/list/:year/:completed', component: InternshipListComponent, canActivate: [CoordinatorGuard] },
 
   {path: 'my-internship', component: StudentInternshipDetailsComponent, canActivate: [StudentGuard] },
-  {path: 'my-internship/create', component: StudentInternshipCreateComponent, canActivate: [StudentGuard] }
+  {path: 'my-internship/create', component: StudentInternshipCreateComponent, canActivate: [StudentGuard] },
+  { path: '**', redirectTo: '/login' }
 ];

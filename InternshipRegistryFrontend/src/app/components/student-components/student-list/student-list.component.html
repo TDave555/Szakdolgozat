@@ -14,7 +14,9 @@
           <th>Name</th>
           <th>Neptun Code</th>
           <th>Specialization</th>
+          <th>Internship</th>
           <th>Actions</th>
+
         </tr>
       </thead>
       <tbody>
@@ -23,6 +25,7 @@
           <td>{{ student.name }}</td>
           <td>{{ student.neptuncode }}</td>
           <td>{{ student.specialization }}</td>
+          <td>{{ student.internshipId? "yes" : "no" }}</td>
           <td>
             <button (click)="editStudent(student.neptuncode)" class="btn btn-sm btn-warning me-2">Edit</button>
           </td>
